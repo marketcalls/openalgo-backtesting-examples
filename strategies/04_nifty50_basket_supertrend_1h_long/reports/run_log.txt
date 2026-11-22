@@ -1,0 +1,88 @@
+D:\Quantflow 5\Day06\backtesting examples\strategies\04_nifty50_basket_supertrend_1h_long\strategy.py:331: UnverifiedScheduleWarning: the NSE_EQ_DELIVERY rates of cost schedule IN-2026-04-01 are verified only up to an earlier date, so the charges may be off (details in result.warnings)
+  result = bt.backtest(SupertrendBasket, client, **run)
+D:\Quantflow 5\Day06\backtesting examples\strategies\04_nifty50_basket_supertrend_1h_long\strategy.py:331: WarmUpWarning: The strategy waited inside the run for the indicators of MAXHEALTH, ONGC, HINDUNILVR, ETERNAL, CIPLA, INFY, POWERGRID, BAJAJ-AUTO, KOTAKBANK, ADANIENT to warm up (MAXHEALTH waited 511 strategy bars and decided from 2022-03-07 10:15 IST; ONGC waited 511 strategy bars and decided from 2022-03-07 10:15 IST; HINDUNILVR waited 511 strategy bars and decided from 2022-03-07 10:15 IST; ETERNAL waited 511 strategy bars and decided from 2022-03-07 10:15 IST; CIPLA waited 511 strategy bars and decided from 2022-03-07 10:15 IST; INFY waited 511 strategy bars and decided from 2022-03-07 10:15 IST; POWERGRID waited 511 strategy bars and decided from 2022-03-07 10:15 IST; BAJAJ-AUTO waited 511 strategy bars and decided from 2022-03-07 10:15 IST; KOTAKBANK waited 511 strategy bars and decided from 2022-03-07 10:15 IST; ADANIENT waited 511 strategy bars and decided from 2022-03-07 10:15 IST): the signals of a symbol before its first decision were not taken. See result.warnings for why.
+  result = bt.backtest(SupertrendBasket, client, **run)
+D:\Quantflow 5\Day06\backtesting examples\strategies\04_nifty50_basket_supertrend_1h_long\strategy.py:382: WarmUpWarning: The strategy waited inside the run for the indicators of MAXHEALTH, ONGC, HINDUNILVR, ETERNAL, CIPLA, INFY, POWERGRID, BAJAJ-AUTO, KOTAKBANK, ADANIENT to warm up (MAXHEALTH waited 511 strategy bars and decided from 2022-03-07 10:15 IST; ONGC waited 511 strategy bars and decided from 2022-03-07 10:15 IST; HINDUNILVR waited 511 strategy bars and decided from 2022-03-07 10:15 IST; ETERNAL waited 511 strategy bars and decided from 2022-03-07 10:15 IST; CIPLA waited 511 strategy bars and decided from 2022-03-07 10:15 IST; INFY waited 511 strategy bars and decided from 2022-03-07 10:15 IST; POWERGRID waited 511 strategy bars and decided from 2022-03-07 10:15 IST; BAJAJ-AUTO waited 511 strategy bars and decided from 2022-03-07 10:15 IST; KOTAKBANK waited 511 strategy bars and decided from 2022-03-07 10:15 IST; ADANIENT waited 511 strategy bars and decided from 2022-03-07 10:15 IST): the signals of a symbol before its first decision were not taken. See result.warnings for why.
+  profit = bt.backtest(SupertrendBasket, client, **run, **kwargs).metrics["net_profit"]
+D:\Quantflow 5\Day06\backtesting examples\strategies\04_nifty50_basket_supertrend_1h_long\strategy.py:382: WarmUpWarning: The strategy waited inside the run for the indicators of MAXHEALTH, ONGC, HINDUNILVR, ETERNAL, CIPLA, INFY, POWERGRID, BAJAJ-AUTO, KOTAKBANK, ADANIENT to warm up (MAXHEALTH waited 511 strategy bars and decided from 2022-03-07 10:15 IST; ONGC waited 511 strategy bars and decided from 2022-03-07 10:15 IST; HINDUNILVR waited 511 strategy bars and decided from 2022-03-07 10:15 IST; ETERNAL waited 511 strategy bars and decided from 2022-03-07 10:15 IST; CIPLA waited 511 strategy bars and decided from 2022-03-07 10:15 IST; INFY waited 511 strategy bars and decided from 2022-03-07 10:15 IST; POWERGRID waited 511 strategy bars and decided from 2022-03-07 10:15 IST; BAJAJ-AUTO waited 511 strategy bars and decided from 2022-03-07 10:15 IST; KOTAKBANK waited 511 strategy bars and decided from 2022-03-07 10:15 IST; ADANIENT waited 511 strategy bars and decided from 2022-03-07 10:15 IST): the signals of a symbol before its first decision were not taken. See result.warnings for why.
+  profit = bt.backtest(SupertrendBasket, client, **run, **kwargs).metrics["net_profit"]
+Net profit   : Rs 3,25,439.77
+Return       : 32.54%
+Max drawdown : -15.70%
+Trades       : 1108 (38% won), 9 still open
+Overfitting  : quick checks: 3 failed (random_out_of_sample, resample, variance), 1 informational; see result.robustness()
+
+== Strategy 04: Supertrend (10, 3), hourly, long only, 10 stocks at 9.5% each
+  Net profit (Rs)     : 325,439.77
+  Return              : 32.54%
+  CAGR                : 5.80%
+  Max drawdown        : -15.70%
+  Volatility (yearly) : 8.13%
+  Sharpe ratio        : 0.73
+  Closed trades       : 1108
+  Win rate            : 37.55%
+  Average win (Rs)    : 4,911.96
+  Average loss (Rs)   : -2,569.79
+  Profit factor       : 1.15
+  Time in market      : 92.82%
+  Charges (Rs)        : 305,254.08
+  Slippage (Rs)       : 70,861.99
+  First order (after the Supertrend warm-up): 2022-03-08 15:15:00+05:30
+  How the trades ended: {'signal': 1108}
+  Average holding: 37.6 hourly candles, 8.0 calendar days
+  Closed trades: profit before charges Rs 569,034.20, charges Rs 303,954.21, after charges Rs 265,079.99
+
+== Year by year
+  2021:   0.00%
+  2022:   4.69%
+  2023:  20.88%
+  2024:   9.73%
+  2025:  -2.44%
+  2026:  -2.16%
+
+== By stock
+            closed_trades win_rate closed_pnl open_pnl total_pnl charges stock_return_buy_hold
+symbol                                                                                        
+MAXHEALTH             107      36%     34,677   35,137    69,814  29,511                215.6%
+ONGC                  105      44%     32,999   -2,278    30,720  28,502                 74.6%
+HINDUNILVR            103      36%      1,997    2,582     4,579  27,874                -12.4%
+ETERNAL               116      49%    165,728        0   165,728  32,374                143.1%
+CIPLA                 107      35%    -50,554    7,726   -42,827  29,653                 58.0%
+INFY                  123      36%    -50,422   -1,994   -52,417  33,630                -34.8%
+POWERGRID             120      32%    -46,448    3,213   -43,235  33,264                 89.3%
+BAJAJ-AUTO            106      42%     96,773     -706    96,067  28,910                220.5%
+KOTAKBANK             115      32%    -67,297   19,224   -48,073  31,459                 31.9%
+ADANIENT              106      36%    147,627   -1,244   146,383  28,778                 66.7%
+
+== Compared with holding
+                                                         net_profit   cagr max_drawdown volatility sharpe
+Strategy 04 (Supertrend on the basket)                   325,439.77  5.80%      -15.70%      8.13%   0.73
+Same 10 stocks, bought and held                          811,589.51 12.63%      -21.59%     14.78%   0.88
+NIFTYBEES, bought and held                               506,517.62  8.55%      -15.36%     12.38%   0.72
+Same 10 stocks, held from the first order (2022-03-08) 1,005,848.37 15.95%      -22.41%     15.20%   1.05
+NIFTYBEES, held from the first order (2022-03-08)        624,248.11 10.86%      -15.12%     12.02%   0.92
+
+== Reality checks (profit kept versus the backtest)
+  Filled at the next candle's close : Rs 286,326.30 (88% kept)
+  Every order one candle late       : Rs 257,377.69 (79% kept)
+
+== Warnings
+  - The strategy waited inside the run for the indicators of MAXHEALTH, ONGC, HINDUNILVR, ETERNAL, CIPLA, INFY, POWERGRID, BAJAJ-AUTO, KOTAKBANK, ADANIENT: MAXHEALTH waited 511 strategy bars, to 2022-03-07 10:15 IST; ONGC waited 511 strategy bars, to 2022-03-07 10:15 IST; HINDUNILVR waited 511 strategy bars, to 2022-03-07 10:15 IST; ETERNAL waited 511 strategy bars, to 2022-03-07 10:15 IST; CIPLA waited 511 strategy bars, to 2022-03-07 10:15 IST; INFY waited 511 strategy bars, to 2022-03-07 10:15 IST; POWERGRID waited 511 strategy bars, to 2022-03-07 10:15 IST; BAJAJ-AUTO waited 511 strategy bars, to 2022-03-07 10:15 IST; KOTAKBANK waited 511 strategy bars, to 2022-03-07 10:15 IST; ADANIENT waited 511 strategy bars, to 2022-03-07 10:15 IST. Until then their bars were not passed to on_bar and their orders were skipped (skip reason 'not_ready'). supertrend(MAXHEALTH.high, MAXHEALTH.low, MAXHEALTH.close, 10, 3.0) needs 512 1h bars of MAXHEALTH and 0 bars closed before 2021-11-22: the source has no bars of MAXHEALTH before 2021-11-22. supertrend(ONGC.high, ONGC.low, ONGC.close, 10, 3.0) needs 512 1h bars of ONGC and 0 bars closed before 2021-11-22: the source has no bars of ONGC before 2021-11-22. supertrend(HINDUNILVR.high, HINDUNILVR.low, HINDUNILVR.close, 10, 3.0) needs 512 1h bars of HINDUNILVR and 0 bars closed before 2021-11-22: the source has no bars of HINDUNILVR before 2021-11-22. supertrend(ETERNAL.high, ETERNAL.low, ETERNAL.close, 10, 3.0) needs 512 1h bars of ETERNAL and 0 bars closed before 2021-11-22: the source has no bars of ETERNAL before 2021-11-22. supertrend(CIPLA.high, CIPLA.low, CIPLA.close, 10, 3.0) needs 512 1h bars of CIPLA and 0 bars closed before 2021-11-22: the source has no bars of CIPLA before 2021-11-22. supertrend(INFY.high, INFY.low, INFY.close, 10, 3.0) needs 512 1h bars of INFY and 0 bars closed before 2021-11-22: the source has no bars of INFY before 2021-11-22. supertrend(POWERGRID.high, POWERGRID.low, POWERGRID.close, 10, 3.0) needs 512 1h bars of POWERGRID and 0 bars closed before 2021-11-22: the source has no bars of POWERGRID before 2021-11-22. supertrend(BAJAJ-AUTO.high, BAJAJ-AUTO.low, BAJAJ-AUTO.close, 10, 3.0) needs 512 1h bars of BAJAJ-AUTO and 0 bars closed before 2021-11-22: the source has no bars of BAJAJ-AUTO before 2021-11-22. supertrend(KOTAKBANK.high, KOTAKBANK.low, KOTAKBANK.close, 10, 3.0) needs 512 1h bars of KOTAKBANK and 0 bars closed before 2021-11-22: the source has no bars of KOTAKBANK before 2021-11-22. supertrend(ADANIENT.high, ADANIENT.low, ADANIENT.close, 10, 3.0) needs 512 1h bars of ADANIENT and 0 bars closed before 2021-11-22: the source has no bars of ADANIENT before 2021-11-22.
+  - MAXHEALTH: generic cash-equity instrument assumed (lot 1, tick 0.05)
+  - ONGC: generic cash-equity instrument assumed (lot 1, tick 0.05)
+  - HINDUNILVR: generic cash-equity instrument assumed (lot 1, tick 0.05)
+  - ETERNAL: generic cash-equity instrument assumed (lot 1, tick 0.05)
+  - CIPLA: generic cash-equity instrument assumed (lot 1, tick 0.05)
+  - INFY: generic cash-equity instrument assumed (lot 1, tick 0.05)
+  - POWERGRID: generic cash-equity instrument assumed (lot 1, tick 0.05)
+  - BAJAJ-AUTO: generic cash-equity instrument assumed (lot 1, tick 0.05)
+  - KOTAKBANK: generic cash-equity instrument assumed (lot 1, tick 0.05)
+  - ADANIENT: generic cash-equity instrument assumed (lot 1, tick 0.05)
+  - charges: the NSE_EQ_DELIVERY rates of cost schedule IN-2026-04-01 used for 2026-11-20 are verified only up to an earlier date, so the charges may be off. Verified on 2026-11-12; later trade dates are charged at these rates and flagged unverified. The start date is the day the Finance Act 2026 F&O STT rates took effect; no other change between that day and the snapshot is known. NSE rows keep the calculator's split between transaction charge and IPFT (NSE circular NSE/FA/73061 moved all but Rs 0.01 per crore of IPFT into the transaction charge in March 2026); the sum is what is charged. Unverified rows say why in their own notes: BSE groups X and SS, BSE options other than Sensex and Bankex. MCX CASTORSEED, RBDPMOLEIN, PEPPER and KAPAS pay the uniform Rs 2.10 per lakh of MCX/F&A/631/2024, not the contract-specific rates of the snapshot, which predate 2024-10-01.
+  - charges: the NSE_EQ_DELIVERY rates of cost schedule IN-2026-04-01 are past verification for 9 fills, from 2026-11-13
+  - Overfitting check failed, random out of sample: 63.0% of 200 judged assignments kept 50% of the in-sample sharpe, where the rule is at least 80% of assignments keep 50% of the in-sample sharpe out of sample (30% of the sessions out of sample). The edge is fragile or small next to the noise of the run's own trades; result.robustness() runs the full set of checks, with charts
+  - Overfitting check failed, trade resample: 91.5% of paths profitable, ruin odds 0.0%, where the rule is at least 95% of paths profitable and at most 5% of paths falling 50% from a peak. The edge is fragile or small next to the noise of the run's own trades; result.robustness() runs the full set of checks, with charts
+  - Overfitting check failed, variance: 17.0% of paths profitable at a 32.5% win rate (91.0% at the run's 37.5%), where the rule is at least 80% of paths profitable with the win rate 5 points lower. The edge is fragile or small next to the noise of the run's own trades; result.robustness() runs the full set of checks, with charts
+
+Saved: D:\Quantflow 5\Day06\backtesting examples\strategies\04_nifty50_basket_supertrend_1h_long\reports\strategy_report.html (Plotly charts)
+       D:\Quantflow 5\Day06\backtesting examples\strategies\04_nifty50_basket_supertrend_1h_long\reports\tearsheet.html, trades.csv, by_stock.csv, compared.csv, signals.csv, tables/

@@ -1,0 +1,3 @@
+time,symbol,slice,slice_ts,instrument,product,quantity_units,average_price_rupees,stop_rupees,stop_units,targets,remainder_units,trail_armed,trail_extreme_rupees,breakeven_armed,breakeven_trigger_rupees,breakeven_level_rupees,realized_rupees
+2021-11-23 09:15:00,NIFTYBEES,1,1637639100000000000,0,CNC,3023.0,193.45,,,[],3023.0,,,,,,0.0
+2021-11-23 09:15:00,GOLDBEES,1,1637639100000000000,1,CNC,8998.0,42.15,,,[],8998.0,,,,,,0.0

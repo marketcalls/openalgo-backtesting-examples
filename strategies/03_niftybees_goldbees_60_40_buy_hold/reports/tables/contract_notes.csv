@@ -1,0 +1,2 @@
+date,note_group,fills,brokerage,stt,exchange_txn,sebi_fee,stamp_duty,gst,charged_total,accrued_total,posted,adjustment,settled
+2021-11-23,NSE_EQ,2,0.0,964.0,33.26,0.96,145.0,5.99,1149.21,1148.8870983322101,1148.89,0.32,True

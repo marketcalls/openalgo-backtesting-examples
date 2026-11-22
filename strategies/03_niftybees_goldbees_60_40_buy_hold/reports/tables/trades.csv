@@ -1,0 +1,1 @@
+symbol,entry_time,exit_time,trade_id,instrument,product,direction,entry_slice,entry_ts,exit_slice,exit_ts,entry_units,max_units,entry_price_rupees,exit_price_rupees,gross_pnl_rupees,costs_rupees,net_pnl_rupees,exit_reason,fills,initial_risk_rupees,r_multiple,mae_rupees,mfe_rupees,slippage_rupees,mae_pct,mfe_pct

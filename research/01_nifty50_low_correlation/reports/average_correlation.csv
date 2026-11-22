@@ -1,0 +1,50 @@
+,avg_corr_to_others,sector
+MAXHEALTH,0.1491,Hospitals
+CIPLA,0.1516,Pharma
+DRREDDY,0.1836,Pharma
+ONGC,0.1872,"Oil, gas and coal"
+HINDUNILVR,0.2031,FMCG
+NESTLEIND,0.2068,FMCG
+INFY,0.217,IT
+SUNPHARMA,0.2176,Pharma
+TCS,0.2229,IT
+ETERNAL,0.2239,Consumer and retail
+HCLTECH,0.2264,IT
+ITC,0.2274,FMCG
+APOLLOHOSP,0.2283,Hospitals
+TECHM,0.2297,IT
+POWERGRID,0.2338,Power
+COALINDIA,0.2425,"Oil, gas and coal"
+ASIANPAINT,0.2512,Consumer and retail
+BAJAJ-AUTO,0.2515,Auto
+TATACONSUM,0.2535,FMCG
+TRENT,0.2555,Consumer and retail
+BHARTIARTL,0.2572,Telecom
+HDFCLIFE,0.2677,Finance and insurance
+KOTAKBANK,0.2724,Banks
+ADANIENT,0.2735,Diversified
+HINDALCO,0.2813,Metals
+NTPC,0.2828,Power
+SBILIFE,0.2841,Finance and insurance
+MARUTI,0.2885,Auto
+BEL,0.2896,Capital goods and defence
+TITAN,0.2916,Consumer and retail
+INDIGO,0.2931,Transport
+EICHERMOT,0.2962,Auto
+AXISBANK,0.2984,Banks
+HDFCBANK,0.2988,Banks
+JIOFIN,0.3044,Finance and insurance
+SHRIRAMFIN,0.3089,Finance and insurance
+ICICIBANK,0.3149,Banks
+BAJFINANCE,0.3179,Finance and insurance
+RELIANCE,0.3198,"Oil, gas and coal"
+M&M,0.3227,Auto
+ADANIPORTS,0.3227,Transport
+SBIN,0.3303,Banks
+TATASTEEL,0.3309,Metals
+TMPV,0.3336,Auto
+ULTRACEMCO,0.3356,Cement and materials
+JSWSTEEL,0.3357,Metals
+BAJAJFINSV,0.34,Finance and insurance
+LT,0.3466,Capital goods and defence
+GRASIM,0.3535,Cement and materials

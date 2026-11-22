@@ -1,0 +1,7 @@
+time,slice,slice_ts,step,type,name,order_id,quantity_units,price_rupees,reject_code,instrument,product,position_quantity_units,scope,level_rupees,target_index,observed_rupees,previous_state,trading_state,cause,gtt_id,stop_trigger_rupees,target_trigger_rupees,order_trigger_rupees,fired_leg,child_limit_rupees
+2021-11-22 09:15:00,0,1637552700000000000,7,order,Submitted,1.0,,,,,,,,,,,,,,,,,,,
+2021-11-22 09:15:00,0,1637552700000000000,7,order,Submitted,2.0,,,,,,,,,,,,,,,,,,,
+2021-11-23 09:15:00,1,1637639100000000000,2,order,Filled,1.0,3023.0,193.45,,,,,,,,,,,,,,,,,
+2021-11-23 09:15:00,1,1637639100000000000,2,position,PositionOpened,,,,,0.0,CNC,3023.0,,,,,,,,,,,,,
+2021-11-23 09:15:00,1,1637639100000000000,2,order,Filled,2.0,8998.0,42.15,,,,,,,,,,,,,,,,,
+2021-11-23 09:15:00,1,1637639100000000000,2,position,PositionOpened,,,,,1.0,CNC,8998.0,,,,,,,,,,,,,

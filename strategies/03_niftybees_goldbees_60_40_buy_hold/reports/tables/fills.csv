@@ -1,0 +1,3 @@
+time,symbol,slice,slice_ts,step,instrument,product,side,quantity_units,price_rupees,fill_at,reason,order_id,gtt_id,target_index,flags,costs_rupees,filled_at_last_close,slippage_rupees
+2021-11-23 09:15:00,NIFTYBEES,1,1637639100000000000,2,0,CNC,BUY,3023.0,193.45,open,entry,1,,,[],697.11,False,151.15
+2021-11-23 09:15:00,GOLDBEES,1,1637639100000000000,2,1,CNC,BUY,8998.0,42.15,open,entry,2,,,[],452.1,False,809.82

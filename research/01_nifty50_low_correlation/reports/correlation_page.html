@@ -1,0 +1,476 @@
+<title>Least-Correlated NIFTY 50 Stocks</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column of numbered method steps, each followed by its chart in a full-width panel. */
+:root {
+  --page: #f6f6f3;
+  --surface: #fcfcfb;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --muted: #6f6d68;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --line: rgba(11, 11, 11, 0.10);
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --deemph: #c3c2b7;
+  --div-neg2: #184f95;
+  --div-neg1: #5598e7;
+  --div-mid: #f0efec;
+  --div-pos1: #e97f7e;
+  --div-pos2: #a8302f;
+  --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page: #0d0d0d; --surface: #1a1a19; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #a3a19b;
+    --grid: #2c2c2a; --axis: #383835; --line: rgba(255, 255, 255, 0.10);
+    --series-1: #3987e5; --series-2: #d95926; --deemph: #52514e;
+    --div-neg2: #6da7ec; --div-neg1: #2d4f7a; --div-mid: #383835; --div-pos1: #7a3534; --div-pos2: #e66767;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --page: #0d0d0d; --surface: #1a1a19; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #a3a19b;
+  --grid: #2c2c2a; --axis: #383835; --line: rgba(255, 255, 255, 0.10);
+  --series-1: #3987e5; --series-2: #d95926; --deemph: #52514e;
+  --div-neg2: #6da7ec; --div-neg1: #2d4f7a; --div-mid: #383835; --div-pos1: #7a3534; --div-pos2: #e66767;
+  color-scheme: dark;
+}
+body {
+  background: var(--page); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1040px; margin: 0 auto; padding-block: 40px 72px; display: grid; gap: 56px; }
+h1, h2, h3 { font-family: var(--font-display); color: var(--ink); text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(30px, 5vw, 44px); line-height: 1.12; font-weight: 600; letter-spacing: -0.01em; }
+h2 { font-size: 26px; line-height: 1.2; font-weight: 600; }
+h3 { font-size: 19px; line-height: 1.3; font-weight: 600; }
+p { margin: 0; max-width: 68ch; }
+.prose { display: grid; gap: 14px; }
+.eyebrow { font-family: var(--font-data); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.lead { font-size: 18px; color: var(--ink-2); }
+.meta { font-family: var(--font-data); font-size: 13px; color: var(--muted); }
+header { display: grid; gap: 16px; }
+.num { font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; }
+.tile { border-top: 2px solid var(--ink); padding-top: 12px; display: grid; gap: 6px; align-content: start; }
+.tile .label { font-size: 13px; color: var(--ink-2); }
+.tile .value { font-family: var(--font-display); font-size: 34px; line-height: 1.1; font-weight: 600; }
+.tile .sub { font-size: 13px; color: var(--muted); }
+.tile.accent { border-top-color: var(--series-1); }
+
+section { display: grid; gap: 20px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px; min-width: 0; }
+.scroll { overflow-x: auto; }
+.chart { width: 100%; min-height: 200px; }
+.chart.wide { min-width: 760px; }
+.caption { font-size: 13px; color: var(--muted); margin-top: 6px; }
+
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+th { font-weight: 500; color: var(--ink-2); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; }
+td.n { text-align: right; font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+th.n { text-align: right; }
+tbody tr:last-child td { border-bottom: none; }
+.swatch { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--series-1); margin-right: 8px; vertical-align: middle; }
+
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 48px; counter-reset: step; }
+.steps > li { display: grid; gap: 16px; counter-increment: step; }
+.step-head { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: baseline; }
+.step-head::before {
+  content: counter(step); font-family: var(--font-data); font-size: 14px; color: var(--series-1);
+  border: 1px solid var(--series-1); border-radius: 50%; width: 28px; height: 28px; display: grid; place-items: center;
+}
+.why { border-left: 2px solid var(--grid); padding-left: 14px; color: var(--ink-2); }
+.why strong { color: var(--ink); font-weight: 600; }
+ul.limits { margin: 0; padding-left: 20px; display: grid; gap: 12px; max-width: 72ch; }
+ul.limits li { padding-left: 4px; }
+.notes { font-size: 14px; color: var(--ink-2); display: grid; gap: 8px; }
+code { font-family: var(--font-data); font-size: 0.9em; background: var(--grid); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+@media (max-width: 520px) { .wrap { gap: 44px; padding-block: 28px 56px; } .lead { font-size: 16px; } }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+
+<main class="wrap">
+  <header>
+    <div class="eyebrow">Research 01 &middot; NIFTY 50 &middot; daily data from Historify</div>
+    <h1>Which NIFTY 50 stocks move least alike?</h1>
+    <p class="lead">A diversified portfolio needs holdings that do not rise and fall on the same days. This page measures how alike every pair of NIFTY 50 stocks moved over five years, picks the <span data-fill="basket_size"></span> that move least alike, and explains each step so you can repeat it.</p>
+    <p class="meta"><span data-fill="period"></span> &middot; <span data-fill="stocks"></span> stocks &middot; <span data-fill="days"></span> trading days &middot; <span data-fill="pairs"></span> pairs</p>
+  </header>
+
+  <section class="tiles" aria-label="Key figures">
+    <div class="tile accent"><div class="label">Basket's average pair correlation</div><div class="value num" data-fill="basket_pairs"></div><div class="sub">against <span data-fill="all_pairs3"></span> for all NIFTY 50 pairs</div></div>
+    <div class="tile"><div class="label">Random <span data-fill="basket_size"></span>-stock baskets it beat</div><div class="value num" data-fill="random_beaten"></div><div class="sub" data-fill="random_beaten_sub"></div></div>
+    <div class="tile"><div class="label">On years the method never saw</div><div class="value num" data-fill="oos_check_basket"></div><div class="sub">against <span data-fill="oos_check_all"></span> for all pairs (picked on <span data-fill="sel_years"></span>)</div></div>
+    <div class="tile"><div class="label">Gold ETF against these stocks</div><div class="value num" data-fill="gold_avg"></div><div class="sub">GOLDBEES, average correlation with the <span data-fill="stocks"></span> stocks</div></div>
+  </section>
+
+  <section>
+    <div class="prose">
+      <h2>The basket</h2>
+      <p>Ten stocks from ten sectors, in the order the method picked them. The two correlation columns are the stock's average with all other NIFTY 50 stocks and with the rest of the basket.</p>
+    </div>
+    <div class="panel scroll"><table>
+      <thead><tr><th>#</th><th>Stock</th><th>Sector</th><th class="n">With NIFTY 50</th><th class="n">With the basket</th><th>Most alike in the basket</th></tr></thead>
+      <tbody id="basket-table"></tbody>
+    </table></div>
+    <div class="panel"><div id="chart-basket" class="chart" role="img" aria-label="Heatmap of the correlation between every pair of stocks in the basket"></div></div>
+    <p class="caption">Every pair inside the basket. Grey cells are close to 0 (unrelated); red cells move together. Hover for exact values.</p>
+  </section>
+
+  <section>
+    <div class="prose">
+      <h2>How to select low-correlation stocks, step by step</h2>
+      <p>The method has eight steps. Each one says what was done and why, so you can apply it to any group of stocks.</p>
+    </div>
+    <ol class="steps">
+      <li>
+        <div class="step-head"><h3>Use clean daily closes</h3></div>
+        <div class="prose">
+          <p>Correlation compares how prices change from one day to the next, so every stock needs complete, comparable data. Daily closes from Historify cover all <span data-fill="stocks"></span> stocks over the same <span data-fill="days"></span> trading days (JIOFIN only from its listing in August 2023, <span data-fill="jiofin_days"></span> days).</p>
+          <p class="why"><strong>Why daily, not 1-minute.</strong> On 1-minute candles, stocks that react to the same news a few seconds apart look less related than they are, and the noise of single trades drowns the pattern. Daily closes measure what a positional investor actually holds through.</p>
+          <p class="why"><strong>Why check for jumps.</strong> A split, bonus or demerger shows as a price drop that nobody lost money on, and it would distort every pair that stock is in. These prices are already adjusted for splits and bonuses; one day is left out: <span data-fill="corporate"></span>. Real crashes, such as the Adani falls of early 2023 and the election-result day of 4 Jun 2024, stay in. Those are exactly the days diversification is for.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-head"><h3>Compare daily returns, not prices</h3></div>
+        <div class="prose">
+          <p>Turn each price series into daily percentage changes, then compare those.</p>
+          <p class="why"><strong>Why.</strong> Two stocks that both doubled over five years have price charts that look alike even if their good and bad days never matched. Daily returns ask the useful question: on the days one stock rose, did the other rise too?</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-head"><h3>Measure every pair</h3></div>
+        <div class="prose">
+          <p>The correlation of two return series runs from +1 (always move together) through 0 (unrelated) to -1 (always opposite). With <span data-fill="stocks"></span> stocks there are <span data-fill="pairs"></span> pairs, and the average pair is <span data-fill="all_pairs2" class="num"></span>.</p>
+          <p class="why"><strong>What it shows.</strong> NIFTY 50 stocks mostly move a little alike, because the whole market reacts to the same news. In the map, grouped by sector, the red blocks along the diagonal are businesses that move together: the most alike pairs are <span data-fill="top_pairs"></span>. Owning two of those is close to owning one twice.</p>
+        </div>
+        <div class="panel scroll"><div id="chart-heatmap" class="chart wide" role="img" aria-label="Heatmap of the correlation between every pair of NIFTY 50 stocks, grouped by sector"></div></div>
+        <p class="caption">All <span data-fill="pairs"></span> pairs, grouped by sector, with the basket in bold. Hover any cell for its value. On a phone, scroll the map sideways.</p>
+      </li>
+      <li>
+        <div class="step-head"><h3>Rank each stock against the rest</h3></div>
+        <div class="prose">
+          <p>Average each stock's correlation with the other <span data-fill="others"></span>. A low average marks a stock that often goes its own way.</p>
+          <p class="why"><strong>What it shows.</strong> Hospitals, pharma, oil and FMCG lead (<span data-fill="lowest5"></span>), while <span data-fill="highest5"></span> move most like the market. This ranking is a starting list, not the answer: see the next step.</p>
+        </div>
+        <div class="panel"><div id="chart-ranked" class="chart" role="img" aria-label="Bar chart of each stock's average correlation with the other NIFTY 50 stocks, lowest first, basket highlighted"></div></div>
+      </li>
+      <li>
+        <div class="step-head"><h3>Build the basket one stock at a time, one per sector</h3></div>
+        <div class="prose">
+          <p>Start with the stock that has the lowest average (<span data-fill="first" class="num"></span>). Then repeatedly add the stock with the lowest average correlation to the stocks already chosen, taking at most one stock from each sector.</p>
+          <p class="why"><strong>Why not just take the ten lowest averages.</strong> A low average says nothing about how two low-average stocks relate to each other. <span data-fill="trap"></span> Building step by step checks every new stock against the ones already in the basket.</p>
+          <p class="why"><strong>Why one per sector.</strong> Companies in the same business share risks that past prices may understate: a drug-pricing rule hits every pharma stock, a banking regulation every bank. The sector cap spreads the basket across different businesses, the closest a stock basket gets to different asset classes.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-head"><h3>Choose how many stocks</h3></div>
+        <div class="prose">
+          <p>Each new stock is the best one left, so the basket's average pair correlation can only climb as it grows: <span data-fill="path_2"></span> with 2 stocks, <span data-fill="path_k"></span> with <span data-fill="basket_size"></span>, and <span data-fill="path_last"></span> with <span data-fill="path_n"></span> (one from every sector).</p>
+          <p class="why"><strong>The trade-off.</strong> Fewer stocks keep correlation lower, but each company's own news (a bad quarter, a fraud, a regulator's order) becomes a bigger share of the money. Ten stocks is a common middle ground: each holds a tenth of the money, and the basket still sits far below the market's <span data-fill="all_pairs2"></span>.</p>
+        </div>
+        <div class="panel"><div id="chart-path" class="chart" role="img" aria-label="Line chart of the basket's average pair correlation as stocks are added"></div></div>
+      </li>
+      <li>
+        <div class="step-head"><h3>Check that it beats chance</h3></div>
+        <div class="prose">
+          <p>Draw <span data-fill="draws"></span> random <span data-fill="basket_size"></span>-stock baskets from the same <span data-fill="stocks"></span> stocks and measure each the same way. <span data-fill="random_text"></span></p>
+          <p class="why"><strong>Low correlation is not low volatility.</strong> An equal-weight basket of these stocks swung <span data-fill="vol_basket"></span> a year, against <span data-fill="vol_random"></span> for the median random basket: lower than <span data-fill="vol_beaten"></span> of them, a smaller gain than the correlation suggests. The chosen stocks swing more on their own (<span data-fill="vol_single_basket"></span> a year against <span data-fill="vol_single_all"></span> for the median NIFTY 50 stock), which offsets part of the benefit. Correlation decides how much the stocks offset each other; it does not change how much each one moves.</p>
+        </div>
+        <div class="panel"><div id="chart-random" class="chart" role="img" aria-label="Histogram of average pair correlation for random baskets, with the chosen basket marked"></div></div>
+      </li>
+      <li>
+        <div class="step-head"><h3>Test it on years it never saw</h3></div>
+        <div class="prose">
+          <p>The method was run again on the first three years only (<span data-fill="sel_years"></span>), and the basket it chose was measured on the two years after (<span data-fill="chk_years"></span>).</p>
+          <p class="why"><strong>Why.</strong> A basket picked with five years of hindsight is bound to look good on those five years. The honest test is whether a basket picked in the past stayed less correlated in the future. <span data-fill="oos_text"></span> Correlations drift, so re-check the basket once a year.</p>
+        </div>
+        <div class="panel"><div id="chart-oos" class="chart" role="img" aria-label="Grouped bar chart comparing the basket's average pair correlation with all NIFTY 50 pairs in the selection and check years"></div></div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>What this does not do</h2>
+    <ul class="limits">
+      <li><strong>It does not find an uncorrelated asset class.</strong> Every stock here is an Indian large-cap equity, and in a market-wide shock they fall together: on 4 Jun 2024, the election-result day, ONGC fell 16.8 percent, POWERGRID 12.4 percent and ADANIENT 19.3 percent, all three in the basket. A holding that truly moves on its own sits outside equities: the gold ETF GOLDBEES had an average correlation of <span data-fill="gold_avg" class="num"></span> with these stocks (from <span data-fill="gold_min"></span> to <span data-fill="gold_max"></span>), lower than any stock basket here.</li>
+      <li><strong>It does not say the basket makes money.</strong> Correlation measures whether stocks move together, not whether they rise. The next step is a backtest of the basket (equal weight, rebalanced every year) against NIFTYBEES and the 60:40 NIFTYBEES and GOLDBEES mix.</li>
+      <li><strong>It does not set weights.</strong> Every stock counts equally here. Giving steadier stocks more money is a separate step.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Method and data</h2>
+    <div class="notes">
+      <p><strong>Data.</strong> Daily closes from Historify on the OpenAlgo server, <span data-fill="period"></span>, for <span data-fill="stocks"></span> of the 50 NIFTY 50 stocks (the 50th constituent was not found in Historify).</p>
+      <p><strong>Measure.</strong> Pearson correlation of daily close-to-close returns; each pair uses the days both stocks traded.</p>
+      <p><strong>Sectors.</strong> Broad groups set by hand (banks, finance and insurance, IT, oil gas and coal, power, FMCG, auto, metals, pharma, hospitals, cement and materials, capital goods and defence, telecom, consumer and retail, transport, diversified). NSE's own industry names differ in places.</p>
+      <p><strong>Checks.</strong> Out of sample: picked on <span data-fill="sel_years"></span>, measured on <span data-fill="chk_years"></span>. Random baskets: <span data-fill="draws"></span> draws with a fixed seed, so the figures repeat on every run.</p>
+      <p><strong>Reproduce.</strong> <code>research/01_nifty50_low_correlation/select_basket.py</code> in the backtesting examples folder fetches the data, writes this page and saves every number as CSV.</p>
+    </div>
+  </section>
+</main>
+
+<script>
+const DATA = {"start":"2021-11-22","end":"2026-11-20","days":1241,"split":"2024-11-22","selection_years":["2021-11-23","2024-11-21"],"check_years":["2024-11-22","2026-11-20"],"stocks":49,"pairs":1176,"basket_size":10,"sectors":{"HDFCBANK":"Banks","ICICIBANK":"Banks","SBIN":"Banks","AXISBANK":"Banks","KOTAKBANK":"Banks","BAJFINANCE":"Finance and insurance","BAJAJFINSV":"Finance and insurance","SHRIRAMFIN":"Finance and insurance","JIOFIN":"Finance and insurance","HDFCLIFE":"Finance and insurance","SBILIFE":"Finance and insurance","TCS":"IT","INFY":"IT","HCLTECH":"IT","TECHM":"IT","RELIANCE":"Oil, gas and coal","ONGC":"Oil, gas and coal","COALINDIA":"Oil, gas and coal","NTPC":"Power","POWERGRID":"Power","HINDUNILVR":"FMCG","ITC":"FMCG","NESTLEIND":"FMCG","TATACONSUM":"FMCG","MARUTI":"Auto","M&M":"Auto","TMPV":"Auto","BAJAJ-AUTO":"Auto","EICHERMOT":"Auto","TATASTEEL":"Metals","JSWSTEEL":"Metals","HINDALCO":"Metals","SUNPHARMA":"Pharma","CIPLA":"Pharma","DRREDDY":"Pharma","APOLLOHOSP":"Hospitals","MAXHEALTH":"Hospitals","ULTRACEMCO":"Cement and materials","GRASIM":"Cement and materials","LT":"Capital goods and defence","BEL":"Capital goods and defence","BHARTIARTL":"Telecom","TITAN":"Consumer and retail","TRENT":"Consumer and retail","ASIANPAINT":"Consumer and retail","ETERNAL":"Consumer and retail","ADANIPORTS":"Transport","INDIGO":"Transport","ADANIENT":"Diversified"},"order":["BAJAJ-AUTO","EICHERMOT","M&M","MARUTI","TMPV","AXISBANK","HDFCBANK","ICICIBANK","KOTAKBANK","SBIN","BEL","LT","GRASIM","ULTRACEMCO","ASIANPAINT","ETERNAL","TITAN","TRENT","ADANIENT","HINDUNILVR","ITC","NESTLEIND","TATACONSUM","BAJAJFINSV","BAJFINANCE","HDFCLIFE","JIOFIN","SBILIFE","SHRIRAMFIN","APOLLOHOSP","MAXHEALTH","HCLTECH","INFY","TCS","TECHM","HINDALCO","JSWSTEEL","TATASTEEL","COALINDIA","ONGC","RELIANCE","CIPLA","DRREDDY","SUNPHARMA","NTPC","POWERGRID","BHARTIARTL","ADANIPORTS","INDIGO"],"corr":[[1.0,0.429,0.42,0.433,0.392,0.263,0.241,0.248,0.222,0.244,0.227,0.287,0.315,0.304,0.246,0.185,0.307,0.271,0.213,0.231,0.188,0.261,0.266,0.283,0.258,0.236,0.279,0.238,0.314,0.233,0.15,0.198,0.128,0.153,0.16,0.249,0.295,0.289,0.165,0.177,0.274,0.139,0.188,0.22,0.252,0.197,0.288,0.245,0.274],[0.429,1.0,0.481,0.525,0.419,0.355,0.329,0.382,0.323,0.38,0.287,0.382,0.405,0.38,0.34,0.237,0.336,0.312,0.292,0.292,0.249,0.238,0.303,0.352,0.334,0.262,0.343,0.318,0.356,0.262,0.207,0.17,0.154,0.173,0.182,0.255,0.34,0.3,0.176,0.125,0.333,0.126,0.199,0.198,0.245,0.194,0.306,0.313,0.322],[0.42,0.481,1.0,0.509,0.495,0.351,0.373,0.389,0.335,0.382,0.342,0.382,0.404,0.445,0.292,0.289,0.38,0.338,0.309,0.27,0.262,0.255,0.284,0.426,0.405,0.305,0.334,0.327,0.398,0.264,0.226,0.2,0.231,0.226,0.223,0.255,0.363,0.332,0.2,0.168,0.362,0.174,0.225,0.248,0.291,0.248,0.321,0.356,0.391],[0.433,0.525,0.509,1.0,0.468,0.379,0.316,0.357,0.319,0.371,0.234,0.381,0.371,0.381,0.352,0.221,0.361,0.259,0.264,0.308,0.233,0.255,0.296,0.379,0.384,0.256,0.288,0.297,0.344,0.202,0.16,0.162,0.126,0.177,0.162,0.233,0.298,0.278,0.161,0.096,0.334,0.124,0.149,0.211,0.256,0.202,0.296,0.305,0.378],[0.392,0.419,0.495,0.468,1.0,0.352,0.329,0.337,0.338,0.411,0.371,0.461,0.413,0.426,0.257,0.276,0.369,0.314,0.334,0.227,0.258,0.182,0.302,0.414,0.36,0.319,0.42,0.324,0.425,0.243,0.171,0.248,0.236,0.272,0.273,0.375,0.418,0.464,0.317,0.261,0.405,0.158,0.235,0.264,0.359,0.28,0.268,0.373,0.4],[0.263,0.355,0.351,0.379,0.352,1.0,0.463,0.586,0.416,0.53,0.292,0.408,0.407,0.395,0.243,0.214,0.278,0.266,0.273,0.236,0.219,0.212,0.228,0.448,0.421,0.345,0.367,0.314,0.441,0.216,0.151,0.171,0.18,0.188,0.169,0.255,0.351,0.337,0.247,0.156,0.336,0.131,0.14,0.11,0.301,0.218,0.251,0.343,0.369],[0.241,0.329,0.373,0.316,0.329,0.463,1.0,0.515,0.472,0.41,0.252,0.418,0.394,0.406,0.294,0.284,0.297,0.251,0.286,0.237,0.219,0.187,0.249,0.415,0.436,0.355,0.359,0.319,0.385,0.237,0.152,0.237,0.267,0.236,0.253,0.278,0.344,0.311,0.17,0.108,0.362,0.124,0.187,0.163,0.238,0.201,0.294,0.347,0.344],[0.248,0.382,0.389,0.357,0.337,0.586,0.515,1.0,0.477,0.519,0.281,0.437,0.438,0.441,0.313,0.243,0.295,0.265,0.29,0.222,0.274,0.192,0.255,0.463,0.458,0.322,0.326,0.322,0.422,0.237,0.158,0.207,0.234,0.229,0.231,0.267,0.378,0.345,0.196,0.137,0.353,0.098,0.144,0.214,0.297,0.229,0.342,0.367,0.382],[0.222,0.323,0.335,0.319,0.338,0.416,0.472,0.477,1.0,0.379,0.259,0.347,0.344,0.35,0.27,0.209,0.275,0.205,0.236,0.279,0.274,0.2,0.256,0.393,0.412,0.32,0.287,0.307,0.318,0.203,0.14,0.192,0.191,0.19,0.204,0.207,0.331,0.262,0.167,0.117,0.326,0.087,0.109,0.178,0.235,0.199,0.318,0.288,0.31],[0.244,0.38,0.382,0.371,0.411,0.53,0.41,0.519,0.379,1.0,0.463,0.484,0.462,0.416,0.252,0.25,0.303,0.315,0.43,0.147,0.263,0.164,0.222,0.451,0.427,0.304,0.389,0.335,0.463,0.214,0.103,0.176,0.161,0.194,0.196,0.328,0.408,0.409,0.353,0.308,0.433,0.105,0.185,0.152,0.442,0.34,0.28,0.505,0.396],[0.227,0.287,0.342,0.234,0.371,0.292,0.252,0.281,0.259,0.463,1.0,0.457,0.349,0.331,0.185,0.248,0.274,0.294,0.366,0.093,0.241,0.155,0.242,0.294,0.271,0.284,0.403,0.271,0.371,0.241,0.141,0.167,0.129,0.13,0.191,0.381,0.389,0.423,0.448,0.371,0.366,0.163,0.168,0.181,0.453,0.383,0.248,0.466,0.323],[0.287,0.382,0.382,0.381,0.461,0.408,0.418,0.437,0.347,0.484,0.457,1.0,0.457,0.465,0.322,0.256,0.373,0.312,0.342,0.197,0.293,0.203,0.274,0.393,0.38,0.325,0.424,0.357,0.442,0.256,0.118,0.294,0.282,0.294,0.276,0.371,0.436,0.445,0.34,0.261,0.425,0.194,0.244,0.259,0.41,0.342,0.301,0.439,0.393],[0.315,0.405,0.404,0.371,0.413,0.407,0.394,0.438,0.344,0.462,0.349,0.457,1.0,0.643,0.38,0.277,0.395,0.332,0.35,0.263,0.3,0.3,0.366,0.463,0.425,0.355,0.349,0.365,0.417,0.315,0.152,0.23,0.245,0.256,0.255,0.42,0.518,0.46,0.289,0.207,0.394,0.174,0.228,0.283,0.371,0.305,0.324,0.408,0.395],[0.304,0.38,0.445,0.381,0.426,0.395,0.406,0.441,0.35,0.416,0.331,0.465,0.643,1.0,0.384,0.244,0.358,0.318,0.309,0.275,0.273,0.301,0.323,0.44,0.421,0.341,0.361,0.349,0.413,0.283,0.202,0.232,0.22,0.241,0.242,0.293,0.43,0.399,0.207,0.145,0.373,0.179,0.227,0.251,0.322,0.268,0.298,0.388,0.416],[0.246,0.34,0.292,0.352,0.257,0.243,0.294,0.313,0.27,0.252,0.185,0.322,0.38,0.384,1.0,0.183,0.356,0.278,0.249,0.391,0.226,0.351,0.339,0.373,0.355,0.252,0.29,0.266,0.274,0.239,0.17,0.18,0.175,0.23,0.164,0.133,0.231,0.188,0.071,-0.021,0.281,0.151,0.179,0.233,0.166,0.134,0.205,0.281,0.355],[0.185,0.237,0.289,0.221,0.276,0.214,0.284,0.243,0.209,0.25,0.248,0.256,0.277,0.244,0.183,1.0,0.295,0.268,0.272,0.12,0.174,0.17,0.206,0.277,0.291,0.263,0.322,0.244,0.252,0.234,0.15,0.161,0.185,0.191,0.212,0.227,0.235,0.259,0.192,0.099,0.263,0.087,0.168,0.188,0.166,0.171,0.192,0.303,0.293],[0.307,0.336,0.38,0.361,0.369,0.278,0.297,0.295,0.275,0.303,0.274,0.373,0.395,0.358,0.356,0.295,1.0,0.324,0.273,0.28,0.28,0.29,0.329,0.418,0.394,0.287,0.286,0.329,0.338,0.279,0.13,0.236,0.234,0.232,0.227,0.28,0.339,0.319,0.217,0.131,0.319,0.153,0.177,0.246,0.258,0.203,0.298,0.338,0.302],[0.271,0.312,0.338,0.259,0.314,0.266,0.251,0.265,0.205,0.315,0.294,0.312,0.332,0.318,0.278,0.268,0.324,1.0,0.256,0.191,0.212,0.224,0.273,0.324,0.316,0.217,0.258,0.227,0.279,0.203,0.166,0.18,0.155,0.15,0.186,0.296,0.321,0.324,0.238,0.165,0.309,0.145,0.164,0.212,0.237,0.221,0.245,0.294,0.354],[0.213,0.292,0.309,0.264,0.334,0.273,0.286,0.29,0.236,0.43,0.366,0.342,0.35,0.309,0.249,0.272,0.273,0.256,1.0,0.103,0.179,0.147,0.215,0.35,0.331,0.305,0.451,0.295,0.327,0.186,0.131,0.141,0.137,0.142,0.166,0.257,0.342,0.32,0.306,0.221,0.34,0.125,0.168,0.177,0.359,0.263,0.237,0.773,0.287],[0.231,0.292,0.27,0.308,0.227,0.236,0.237,0.222,0.279,0.147,0.093,0.197,0.263,0.275,0.391,0.12,0.28,0.191,0.103,1.0,0.35,0.477,0.436,0.221,0.217,0.227,0.136,0.261,0.18,0.198,0.131,0.195,0.201,0.2,0.136,0.089,0.161,0.114,0.031,-0.039,0.225,0.129,0.136,0.165,0.106,0.117,0.194,0.151,0.24],[0.188,0.249,0.262,0.233,0.258,0.219,0.219,0.274,0.274,0.263,0.241,0.293,0.3,0.273,0.226,0.174,0.28,0.212,0.179,0.35,1.0,0.264,0.328,0.252,0.267,0.176,0.167,0.201,0.22,0.17,0.112,0.189,0.169,0.174,0.184,0.187,0.296,0.255,0.226,0.149,0.305,0.137,0.189,0.196,0.206,0.172,0.266,0.258,0.232],[0.261,0.238,0.255,0.255,0.182,0.212,0.187,0.192,0.2,0.164,0.155,0.203,0.3,0.301,0.351,0.17,0.29,0.224,0.147,0.477,0.264,1.0,0.421,0.258,0.245,0.224,0.176,0.24,0.167,0.233,0.154,0.147,0.12,0.17,0.111,0.147,0.203,0.154,0.09,0.061,0.239,0.125,0.166,0.178,0.138,0.182,0.179,0.173,0.195],[0.266,0.303,0.284,0.296,0.302,0.228,0.249,0.255,0.256,0.222,0.242,0.274,0.366,0.323,0.339,0.206,0.329,0.273,0.215,0.436,0.328,0.421,1.0,0.31,0.273,0.274,0.192,0.26,0.244,0.238,0.139,0.215,0.246,0.245,0.222,0.184,0.264,0.229,0.166,0.093,0.271,0.115,0.143,0.216,0.219,0.191,0.275,0.249,0.282],[0.283,0.352,0.426,0.379,0.414,0.448,0.415,0.463,0.393,0.451,0.294,0.393,0.463,0.44,0.373,0.277,0.418,0.324,0.35,0.221,0.252,0.258,0.31,1.0,0.793,0.385,0.364,0.41,0.469,0.276,0.165,0.268,0.283,0.284,0.266,0.306,0.382,0.381,0.25,0.133,0.398,0.146,0.163,0.232,0.302,0.236,0.272,0.395,0.367],[0.258,0.334,0.405,0.384,0.36,0.421,0.436,0.458,0.412,0.427,0.271,0.38,0.425,0.421,0.355,0.291,0.394,0.316,0.331,0.217,0.267,0.245,0.273,0.793,1.0,0.326,0.333,0.339,0.471,0.283,0.159,0.214,0.249,0.233,0.234,0.256,0.356,0.336,0.204,0.109,0.362,0.108,0.138,0.191,0.269,0.186,0.283,0.383,0.365],[0.236,0.262,0.305,0.256,0.319,0.345,0.355,0.322,0.32,0.304,0.284,0.325,0.355,0.341,0.252,0.263,0.287,0.217,0.305,0.227,0.176,0.224,0.274,0.385,0.326,1.0,0.289,0.62,0.32,0.22,0.191,0.203,0.188,0.192,0.207,0.247,0.277,0.289,0.176,0.113,0.274,0.142,0.165,0.218,0.223,0.149,0.246,0.321,0.314],[0.279,0.343,0.334,0.288,0.42,0.367,0.359,0.326,0.287,0.389,0.403,0.424,0.349,0.361,0.29,0.322,0.286,0.258,0.451,0.136,0.167,0.176,0.192,0.364,0.333,0.289,1.0,0.316,0.432,0.228,0.205,0.178,0.135,0.157,0.18,0.307,0.347,0.43,0.326,0.284,0.456,0.243,0.172,0.258,0.376,0.326,0.177,0.465,0.419],[0.238,0.318,0.327,0.297,0.324,0.314,0.319,0.322,0.307,0.335,0.271,0.357,0.365,0.349,0.266,0.244,0.329,0.227,0.295,0.261,0.201,0.24,0.26,0.41,0.339,0.62,0.316,1.0,0.283,0.211,0.164,0.229,0.225,0.226,0.229,0.275,0.313,0.321,0.218,0.18,0.326,0.183,0.182,0.241,0.262,0.214,0.274,0.345,0.283],[0.314,0.356,0.398,0.344,0.425,0.441,0.385,0.422,0.318,0.463,0.371,0.442,0.417,0.413,0.274,0.252,0.338,0.279,0.327,0.18,0.22,0.167,0.244,0.469,0.471,0.32,0.432,0.283,1.0,0.248,0.173,0.177,0.168,0.162,0.175,0.29,0.361,0.359,0.275,0.185,0.329,0.142,0.154,0.194,0.343,0.263,0.261,0.377,0.422],[0.233,0.262,0.264,0.202,0.243,0.216,0.237,0.237,0.203,0.214,0.241,0.256,0.315,0.283,0.239,0.234,0.279,0.203,0.186,0.198,0.17,0.233,0.238,0.276,0.283,0.22,0.228,0.211,0.248,1.0,0.3,0.217,0.157,0.167,0.215,0.214,0.26,0.228,0.201,0.116,0.226,0.244,0.224,0.258,0.179,0.196,0.24,0.224,0.24],[0.15,0.207,0.226,0.16,0.171,0.151,0.152,0.158,0.14,0.103,0.141,0.118,0.152,0.202,0.17,0.15,0.13,0.166,0.131,0.131,0.112,0.154,0.139,0.165,0.159,0.191,0.205,0.164,0.173,0.3,1.0,0.098,0.095,0.086,0.127,0.088,0.17,0.136,0.08,0.036,0.152,0.162,0.132,0.2,0.137,0.102,0.163,0.141,0.182],[0.198,0.17,0.2,0.162,0.248,0.171,0.237,0.207,0.192,0.176,0.167,0.294,0.23,0.232,0.18,0.161,0.236,0.18,0.141,0.195,0.189,0.147,0.215,0.268,0.214,0.203,0.178,0.229,0.177,0.217,0.098,1.0,0.703,0.682,0.631,0.261,0.258,0.259,0.172,0.157,0.251,0.112,0.191,0.199,0.139,0.132,0.256,0.179,0.174],[0.128,0.154,0.231,0.126,0.236,0.18,0.267,0.234,0.191,0.161,0.129,0.282,0.245,0.22,0.175,0.185,0.234,0.155,0.137,0.201,0.169,0.12,0.246,0.283,0.249,0.188,0.135,0.225,0.168,0.157,0.095,0.703,1.0,0.737,0.688,0.227,0.237,0.208,0.104,0.116,0.23,0.111,0.187,0.195,0.097,0.083,0.243,0.169,0.172],[0.153,0.173,0.226,0.177,0.272,0.188,0.236,0.229,0.19,0.194,0.13,0.294,0.256,0.241,0.23,0.191,0.232,0.15,0.142,0.2,0.174,0.17,0.245,0.284,0.233,0.192,0.157,0.226,0.162,0.167,0.086,0.682,0.737,1.0,0.651,0.214,0.225,0.214,0.157,0.12,0.248,0.116,0.176,0.214,0.1,0.102,0.199,0.173,0.174],[0.16,0.182,0.223,0.162,0.273,0.169,0.253,0.231,0.204,0.196,0.191,0.276,0.255,0.242,0.164,0.212,0.227,0.186,0.166,0.136,0.184,0.111,0.222,0.266,0.234,0.207,0.18,0.229,0.175,0.215,0.127,0.631,0.688,0.651,1.0,0.248,0.27,0.265,0.19,0.175,0.261,0.09,0.177,0.214,0.152,0.133,0.241,0.199,0.18],[0.249,0.255,0.255,0.233,0.375,0.255,0.278,0.267,0.207,0.328,0.381,0.371,0.42,0.293,0.133,0.227,0.28,0.296,0.257,0.089,0.187,0.147,0.184,0.306,0.256,0.247,0.307,0.275,0.29,0.214,0.088,0.261,0.227,0.214,0.248,1.0,0.617,0.697,0.434,0.422,0.362,0.147,0.176,0.254,0.348,0.279,0.274,0.315,0.277],[0.295,0.34,0.363,0.298,0.418,0.351,0.344,0.378,0.331,0.408,0.389,0.436,0.518,0.43,0.231,0.235,0.339,0.321,0.342,0.161,0.296,0.203,0.264,0.382,0.356,0.277,0.347,0.313,0.361,0.26,0.17,0.258,0.237,0.225,0.27,0.617,1.0,0.77,0.396,0.352,0.394,0.181,0.224,0.246,0.407,0.312,0.325,0.399,0.343],[0.289,0.3,0.332,0.278,0.464,0.337,0.311,0.345,0.262,0.409,0.423,0.445,0.46,0.399,0.188,0.259,0.319,0.324,0.32,0.114,0.255,0.154,0.229,0.381,0.336,0.289,0.43,0.321,0.359,0.228,0.136,0.259,0.208,0.214,0.265,0.697,0.77,1.0,0.5,0.425,0.415,0.171,0.184,0.273,0.454,0.336,0.28,0.392,0.344],[0.165,0.176,0.2,0.161,0.317,0.247,0.17,0.196,0.167,0.353,0.448,0.34,0.289,0.207,0.071,0.192,0.217,0.238,0.306,0.031,0.226,0.09,0.166,0.25,0.204,0.176,0.326,0.218,0.275,0.201,0.08,0.172,0.104,0.157,0.19,0.434,0.396,0.5,1.0,0.503,0.379,0.102,0.143,0.19,0.508,0.366,0.194,0.371,0.23],[0.177,0.125,0.168,0.096,0.261,0.156,0.108,0.137,0.117,0.308,0.371,0.261,0.207,0.145,-0.021,0.099,0.131,0.165,0.221,-0.039,0.149,0.061,0.093,0.133,0.109,0.113,0.284,0.18,0.185,0.116,0.036,0.157,0.116,0.12,0.175,0.422,0.352,0.425,0.503,1.0,0.359,0.084,0.104,0.123,0.476,0.345,0.219,0.283,0.071],[0.274,0.333,0.362,0.334,0.405,0.336,0.362,0.353,0.326,0.433,0.366,0.425,0.394,0.373,0.281,0.263,0.319,0.309,0.34,0.225,0.305,0.239,0.271,0.398,0.362,0.274,0.456,0.326,0.329,0.226,0.152,0.251,0.23,0.248,0.261,0.362,0.394,0.415,0.379,0.359,1.0,0.133,0.183,0.24,0.376,0.311,0.336,0.41,0.309],[0.139,0.126,0.174,0.124,0.158,0.131,0.124,0.098,0.087,0.105,0.163,0.194,0.174,0.179,0.151,0.087,0.153,0.145,0.125,0.129,0.137,0.125,0.115,0.146,0.108,0.142,0.243,0.183,0.142,0.244,0.162,0.112,0.111,0.116,0.09,0.147,0.181,0.171,0.102,0.084,0.133,1.0,0.412,0.373,0.156,0.14,0.184,0.142,0.113],[0.188,0.199,0.225,0.149,0.235,0.14,0.187,0.144,0.109,0.185,0.168,0.244,0.228,0.227,0.179,0.168,0.177,0.164,0.168,0.136,0.189,0.166,0.143,0.163,0.138,0.165,0.172,0.182,0.154,0.224,0.132,0.191,0.187,0.176,0.177,0.176,0.224,0.184,0.143,0.104,0.183,0.412,1.0,0.347,0.178,0.14,0.19,0.188,0.166],[0.22,0.198,0.248,0.211,0.264,0.11,0.163,0.214,0.178,0.152,0.181,0.259,0.283,0.251,0.233,0.188,0.246,0.212,0.177,0.165,0.196,0.178,0.216,0.232,0.191,0.218,0.258,0.241,0.194,0.258,0.2,0.199,0.195,0.214,0.214,0.254,0.246,0.273,0.19,0.123,0.24,0.373,0.347,1.0,0.21,0.18,0.237,0.223,0.195],[0.252,0.245,0.291,0.256,0.359,0.301,0.238,0.297,0.235,0.442,0.453,0.41,0.371,0.322,0.166,0.166,0.258,0.237,0.359,0.106,0.206,0.138,0.219,0.302,0.269,0.223,0.376,0.262,0.343,0.179,0.137,0.139,0.097,0.1,0.152,0.348,0.407,0.454,0.508,0.476,0.376,0.156,0.178,0.21,1.0,0.588,0.263,0.431,0.276],[0.197,0.194,0.248,0.202,0.28,0.218,0.201,0.229,0.199,0.34,0.383,0.342,0.305,0.268,0.134,0.171,0.203,0.221,0.263,0.117,0.172,0.182,0.191,0.236,0.186,0.149,0.326,0.214,0.263,0.196,0.102,0.132,0.083,0.102,0.133,0.279,0.312,0.336,0.366,0.345,0.311,0.14,0.14,0.18,0.588,1.0,0.241,0.359,0.244],[0.288,0.306,0.321,0.296,0.268,0.251,0.294,0.342,0.318,0.28,0.248,0.301,0.324,0.298,0.205,0.192,0.298,0.245,0.237,0.194,0.266,0.179,0.275,0.272,0.283,0.246,0.177,0.274,0.261,0.24,0.163,0.256,0.243,0.199,0.241,0.274,0.325,0.28,0.194,0.219,0.336,0.184,0.19,0.237,0.263,0.241,1.0,0.297,0.222],[0.245,0.313,0.356,0.305,0.373,0.343,0.347,0.367,0.288,0.505,0.466,0.439,0.408,0.388,0.281,0.303,0.338,0.294,0.773,0.151,0.258,0.173,0.249,0.395,0.383,0.321,0.465,0.345,0.377,0.224,0.141,0.179,0.169,0.173,0.199,0.315,0.399,0.392,0.371,0.283,0.41,0.142,0.188,0.223,0.431,0.359,0.297,1.0,0.35],[0.274,0.322,0.391,0.378,0.4,0.369,0.344,0.382,0.31,0.396,0.323,0.393,0.395,0.416,0.355,0.293,0.302,0.354,0.287,0.24,0.232,0.195,0.282,0.367,0.365,0.314,0.419,0.283,0.422,0.24,0.182,0.174,0.172,0.174,0.18,0.277,0.343,0.344,0.23,0.071,0.309,0.113,0.166,0.195,0.276,0.244,0.222,0.35,1.0]],"avg":{"HDFCBANK":0.2988,"ICICIBANK":0.3149,"SBIN":0.3303,"AXISBANK":0.2984,"KOTAKBANK":0.2724,"BAJFINANCE":0.3179,"BAJAJFINSV":0.34,"SHRIRAMFIN":0.3089,"JIOFIN":0.3044,"HDFCLIFE":0.2677,"SBILIFE":0.2841,"TCS":0.2229,"INFY":0.217,"HCLTECH":0.2264,"TECHM":0.2297,"RELIANCE":0.3198,"ONGC":0.1872,"COALINDIA":0.2425,"NTPC":0.2828,"POWERGRID":0.2338,"HINDUNILVR":0.2031,"ITC":0.2274,"NESTLEIND":0.2068,"TATACONSUM":0.2535,"MARUTI":0.2885,"M&M":0.3227,"TMPV":0.3336,"BAJAJ-AUTO":0.2515,"EICHERMOT":0.2962,"TATASTEEL":0.3309,"JSWSTEEL":0.3357,"HINDALCO":0.2813,"SUNPHARMA":0.2176,"CIPLA":0.1516,"DRREDDY":0.1836,"APOLLOHOSP":0.2283,"MAXHEALTH":0.1491,"ULTRACEMCO":0.3356,"GRASIM":0.3535,"LT":0.3466,"BEL":0.2896,"BHARTIARTL":0.2572,"TITAN":0.2916,"TRENT":0.2555,"ASIANPAINT":0.2512,"ETERNAL":0.2239,"ADANIPORTS":0.3227,"INDIGO":0.2931,"ADANIENT":0.2735},"all_pairs":0.2705,"basket":["MAXHEALTH","ONGC","HINDUNILVR","ETERNAL","CIPLA","INFY","POWERGRID","BAJAJ-AUTO","KOTAKBANK","ADANIENT"],"basket_pairs":0.155,"basket_rows":[{"order":1,"symbol":"MAXHEALTH","sector":"Hospitals","avg_corr_to_nifty50":0.149,"avg_corr_to_basket":0.122,"highest_pair_in_basket":"CIPLA 0.16"},{"order":2,"symbol":"ONGC","sector":"Oil, gas and coal","avg_corr_to_nifty50":0.187,"avg_corr_to_basket":0.129,"highest_pair_in_basket":"POWERGRID 0.35"},{"order":3,"symbol":"HINDUNILVR","sector":"FMCG","avg_corr_to_nifty50":0.203,"avg_corr_to_basket":0.141,"highest_pair_in_basket":"KOTAKBANK 0.28"},{"order":4,"symbol":"ETERNAL","sector":"Consumer and retail","avg_corr_to_nifty50":0.224,"avg_corr_to_basket":0.164,"highest_pair_in_basket":"ADANIENT 0.27"},{"order":5,"symbol":"CIPLA","sector":"Pharma","avg_corr_to_nifty50":0.152,"avg_corr_to_basket":0.118,"highest_pair_in_basket":"MAXHEALTH 0.16"},{"order":6,"symbol":"INFY","sector":"IT","avg_corr_to_nifty50":0.217,"avg_corr_to_basket":0.138,"highest_pair_in_basket":"HINDUNILVR 0.20"},{"order":7,"symbol":"POWERGRID","sector":"Power","avg_corr_to_nifty50":0.234,"avg_corr_to_basket":0.18,"highest_pair_in_basket":"ONGC 0.35"},{"order":8,"symbol":"BAJAJ-AUTO","sector":"Auto","avg_corr_to_nifty50":0.252,"avg_corr_to_basket":0.182,"highest_pair_in_basket":"HINDUNILVR 0.23"},{"order":9,"symbol":"KOTAKBANK","sector":"Banks","avg_corr_to_nifty50":0.272,"avg_corr_to_basket":0.187,"highest_pair_in_basket":"HINDUNILVR 0.28"},{"order":10,"symbol":"ADANIENT","sector":"Diversified","avg_corr_to_nifty50":0.273,"avg_corr_to_basket":0.189,"highest_pair_in_basket":"ETERNAL 0.27"}],"path":["MAXHEALTH","ONGC","HINDUNILVR","ETERNAL","CIPLA","INFY","POWERGRID","BAJAJ-AUTO","KOTAKBANK","ADANIENT","HDFCLIFE","HINDALCO","INDIGO","BHARTIARTL","BEL","ULTRACEMCO"],"path_values":[0.0364,0.0427,0.083,0.096,0.1112,0.125,0.1369,0.1466,0.155,0.1656,0.175,0.1837,0.1906,0.1997,0.2095],"random_avg_pair":[0.2938,0.2326,0.321,0.2551,0.2487,0.3322,0.2801,0.215,0.284,0.2329,0.3014,0.2425,0.2277,0.2707,0.2809,0.2249,0.2563,0.2412,0.2418,0.2429,0.3112,0.2509,0.3396,0.2549,0.2254,0.2625,0.2599,0.2697,0.2858,0.2903,0.2526,0.287,0.2928,0.2526,0.2217,0.2665,0.2876,0.2996,0.2332,0.2342,0.2755,0.2768,0.2851,0.2334,0.2728,0.2418,0.2524,0.3313,0.2197,0.2642,0.2709,0.2463,0.3521,0.2618,0.2451,0.2941,0.281,0.2312,0.2327,0.2626,0.2741,0.3193,0.2701,0.2605,0.2402,0.2778,0.3187,0.2692,0.2603,0.2317,0.282,0.2446,0.2207,0.355,0.2733,0.2193,0.2594,0.3009,0.262,0.2969,0.2311,0.2638,0.2637,0.2537,0.2969,0.2353,0.3047,0.1906,0.2848,0.2836,0.2973,0.2627,0.3189,0.224,0.2743,0.3137,0.2732,0.2733,0.229,0.2409,0.2181,0.2635,0.263,0.2722,0.2269,0.3274,0.2572,0.2714,0.2441,0.2775,0.2516,0.2173,0.3006,0.2527,0.2741,0.2584,0.2427,0.2346,0.3173,0.2533,0.2671,0.2458,0.2582,0.2147,0.2213,0.22,0.2884,0.2191,0.2258,0.2204,0.2618,0.2626,0.2584,0.2832,0.2304,0.21,0.2733,0.2235,0.2962,0.2794,0.2468,0.27,0.3229,0.2159,0.2214,0.2573,0.2816,0.2304,0.2749,0.2658,0.2448,0.2123,0.3185,0.2582,0.3033,0.2716,0.2299,0.3,0.3007,0.2289,0.3074,0.2388,0.2951,0.2575,0.2682,0.2187,0.2476,0.2176,0.2699,0.2279,0.2561,0.2527,0.2716,0.2485,0.2477,0.2338,0.3129,0.3144,0.2605,0.2864,0.2368,0.2803,0.238,0.2902,0.2847,0.3123,0.259,0.2854,0.3246,0.3271,0.2579,0.2977,0.2509,0.2331,0.2888,0.3016,0.272,0.2254,0.2397,0.255,0.2253,0.3158,0.2187,0.213,0.2579,0.2323,0.2405,0.2984,0.2622,0.2491,0.2609,0.2322,0.2637,0.2818,0.2204,0.2704,0.2455,0.34,0.2606,0.2757,0.2677,0.3162,0.2561,0.2626,0.2245,0.2986,0.2325,0.2619,0.2722,0.2747,0.2751,0.2598,0.2628,0.23,0.2837,0.2558,0.2874,0.2951,0.2607,0.2756,0.2976,0.2831,0.2723,0.2312,0.2412,0.3323,0.3011,0.2865,0.282,0.263,0.2533,0.2197,0.239,0.2518,0.2257,0.2875,0.2486,0.2589,0.2617,0.2346,0.2307,0.3172,0.2416,0.3083,0.322,0.246,0.2795,0.277,0.2851,0.264,0.2826,0.2934,0.2844,0.2981,0.2895,0.2724,0.2666,0.2949,0.2643,0.269,0.2386,0.2851,0.2643,0.2742,0.2882,0.252,0.3318,0.262,0.242,0.2415,0.2844,0.3309,0.303,0.3312,0.2427,0.2864,0.2944,0.2801,0.283,0.3204,0.2703,0.2206,0.2751,0.2476,0.3486,0.2785,0.2895,0.2561,0.2292,0.2519,0.2724,0.277,0.3055,0.2712,0.3149,0.31,0.2781,0.2566,0.2805,0.2391,0.2909,0.3225,0.2427,0.3308,0.2253,0.2561,0.3287,0.2622,0.2719,0.2777,0.2677,0.2129,0.2775,0.3157,0.2922,0.2839,0.2514,0.2352,0.2452,0.2906,0.2253,0.2601,0.2678,0.2456,0.2816,0.2658,0.248,0.2884,0.2405,0.2616,0.2135,0.309,0.3351,0.2358,0.2836,0.2658,0.2116,0.3008,0.2601,0.2923,0.2789,0.2818,0.223,0.3019,0.3021,0.3028,0.2631,0.2947,0.25,0.2514,0.3432,0.2932,0.3434,0.2619,0.2297,0.2604,0.2438,0.3249,0.2705,0.2854,0.2449,0.3252,0.273,0.3104,0.2527,0.2982,0.2557,0.2414,0.2634,0.2567,0.2889,0.3482,0.2496,0.2231,0.2357,0.2539,0.2543,0.2401,0.2627,0.2969,0.2463,0.2549,0.2924,0.2423,0.2574,0.2722,0.208,0.2952,0.3044,0.3047,0.2675,0.2223,0.2813,0.2366,0.2928,0.2437,0.3094,0.2617,0.267,0.2733,0.2498,0.2362,0.2568,0.2144,0.2162,0.2484,0.3113,0.3036,0.3324,0.227,0.2661,0.2627,0.2303,0.2432,0.2561,0.2349,0.2601,0.2506,0.2558,0.2337,0.2676,0.2125,0.2501,0.2388,0.3525,0.2869,0.2938,0.3257,0.2929,0.2245,0.2487,0.2906,0.3242,0.2251,0.2843,0.2612,0.2352,0.2751,0.3066,0.2421,0.2362,0.2974,0.2986,0.2604,0.3079,0.3053,0.2709,0.2357,0.2796,0.2608,0.2177,0.2863,0.3319,0.2925,0.2378,0.2553,0.2901,0.2332,0.3074,0.2648,0.3186,0.3013,0.2659,0.261,0.2668,0.262,0.2506,0.2877,0.2498,0.2689,0.2739,0.2613,0.3541,0.2568,0.3284,0.2462,0.301,0.2742,0.2748,0.2899,0.2611,0.2715,0.2372,0.3057,0.289,0.271,0.2791,0.2889,0.2417,0.287,0.2736,0.2796,0.2563,0.2702,0.28,0.2544,0.2534,0.2572,0.2554,0.3142,0.2923,0.2624,0.2694,0.2475,0.317,0.276,0.2349,0.2784,0.26,0.2693,0.246,0.2725,0.2487,0.276,0.2471,0.3043,0.263,0.2611,0.2613,0.223,0.2955,0.2087,0.2741,0.3163,0.2809,0.2259,0.2492,0.2384,0.2472,0.3196,0.2971,0.2682,0.298,0.3177,0.2916,0.31,0.2385,0.2996,0.2257,0.2373,0.2401,0.2789,0.2659,0.3127,0.2432,0.2465,0.2432,0.2967,0.2887,0.2912,0.2259,0.3621,0.2481,0.262,0.2246,0.3025,0.2526,0.2475,0.2815,0.2443,0.2819,0.3383,0.3224,0.2278,0.2728,0.2033,0.2718,0.2563,0.2866,0.3206,0.2761,0.283,0.3168,0.2324,0.2496,0.3486,0.2499,0.2622,0.2579,0.2416,0.277,0.2456,0.2859,0.2928,0.2475,0.2821,0.2289,0.2337,0.2693,0.2784,0.2378,0.3216,0.2892,0.2405,0.2563,0.3301,0.2505,0.2417,0.2726,0.2597,0.243,0.3125,0.3042,0.217,0.2739,0.2522,0.2376,0.2588,0.3012,0.235,0.2511,0.2635,0.2719,0.2598,0.2296,0.255,0.2939,0.2204,0.283,0.2741,0.281,0.2374,0.2688,0.2653,0.2423,0.2446,0.2429,0.3245,0.2486,0.3301,0.2845,0.274,0.2988,0.3398,0.2322,0.2465,0.2771,0.2705,0.3032,0.2577,0.2697,0.3139,0.2155,0.3127,0.241,0.2545,0.2495,0.2925,0.313,0.301,0.2603,0.2767,0.2783,0.2753,0.2713,0.292,0.2348,0.2575,0.2494,0.2846,0.2569,0.2771,0.2931,0.2761,0.2308,0.3113,0.2564,0.2626,0.2667,0.2852,0.2987,0.241,0.2453,0.2574,0.2221,0.2245,0.2456,0.3063,0.2272,0.2578,0.2724,0.2573,0.249,0.3185,0.2512,0.2429,0.2913,0.2687,0.2819,0.2761,0.2563,0.3147,0.2355,0.3292,0.233,0.2198,0.2803,0.2925,0.247,0.2634,0.2993,0.2576,0.2439,0.2346,0.301,0.2621,0.2526,0.2448,0.2498,0.2801,0.3261,0.3083,0.2259,0.2787,0.2813,0.2601,0.248,0.2386,0.3037,0.2602,0.2502,0.2802,0.2819,0.2869,0.298,0.2436,0.2809,0.3086,0.2807,0.2494,0.2648,0.223,0.2542,0.2523,0.2597,0.2868,0.3239,0.2904,0.2786,0.3001,0.2527,0.2651,0.2251,0.2621,0.2084,0.2909,0.3325,0.2928,0.2741,0.282,0.2652,0.2739,0.296,0.2505,0.2946,0.3035,0.2441,0.2679,0.251,0.2569,0.2887,0.2833,0.2678,0.2851,0.2375,0.2317,0.3342,0.274,0.1921,0.2578,0.258,0.2782,0.2712,0.2653,0.2706,0.2589,0.2358,0.3089,0.2437,0.3189,0.3215,0.284,0.2823,0.2221,0.258,0.22,0.2606,0.281,0.2964,0.2425,0.2439,0.2766,0.2547,0.2191,0.2254,0.2686,0.3123,0.2863,0.2918,0.3187,0.2418,0.2533,0.2151,0.2096,0.3085,0.2607,0.2686,0.2828,0.2262,0.309,0.2835,0.2571,0.2157,0.2327,0.3078,0.2895,0.3147,0.3204,0.228,0.256,0.3156,0.264,0.2577,0.302,0.2529,0.3079,0.2817,0.2773,0.2283,0.2364,0.2865,0.2756,0.2939,0.2828,0.3013,0.2311,0.2585,0.3042,0.3054,0.3026,0.2603,0.3016,0.3008,0.2756,0.2919,0.2682,0.277,0.2801,0.261,0.2553,0.2784,0.26,0.2104,0.2239,0.2815,0.2855,0.2371,0.2855,0.277,0.2824,0.2721,0.3216,0.225,0.3201,0.2736,0.2592,0.2897,0.2803,0.2692,0.318,0.32,0.2628,0.2164,0.2892,0.2673,0.2915,0.2534,0.2766,0.2342,0.2697,0.2785,0.2951,0.2436,0.3028,0.2582,0.2751,0.2843,0.2886,0.336,0.3236,0.282,0.2755,0.2725,0.2657,0.2505,0.2634,0.322,0.2395,0.23,0.24,0.2404,0.2699,0.2801,0.2913,0.2709,0.2887,0.2779,0.2481,0.3309,0.2888,0.2817,0.2542,0.2362,0.2678,0.2559,0.2298,0.2732,0.2328,0.2797,0.2661,0.2664,0.2864,0.2821,0.2142,0.2932,0.2148,0.3162,0.2956,0.2662,0.3118,0.3128,0.2552,0.2564,0.2391,0.2451,0.2669,0.2418,0.2915,0.2561,0.3103,0.2722,0.2785,0.2753,0.3088,0.2588,0.2483,0.2517,0.2593,0.257,0.3323,0.2988,0.2278,0.271,0.3332,0.2526,0.2896,0.2422,0.2714,0.2506,0.2642,0.2697,0.258,0.2568,0.2426,0.2775,0.3549,0.3278,0.2477,0.3162,0.2961,0.2626,0.2383,0.2648,0.2469,0.3074,0.2105,0.3079,0.2677,0.3349,0.336,0.2839,0.2547,0.2726,0.2328,0.3408,0.2318,0.2657,0.2753,0.2843,0.2668,0.2684,0.2945,0.2354,0.2546,0.2661,0.2725,0.2502,0.3329,0.3457,0.2669,0.2987,0.2486,0.2293,0.274,0.2334,0.2417,0.2767,0.3343,0.2804,0.2965,0.2931,0.2364,0.2808,0.2978,0.3125,0.2654,0.3036,0.311,0.2609,0.2483,0.2551,0.2614,0.2839,0.2982,0.2053,0.3262,0.2644,0.3098,0.357,0.3259,0.2827,0.2955,0.3084,0.2653,0.2364,0.305,0.3216,0.2578,0.2376,0.3198,0.2513,0.2709,0.2494,0.2789,0.2783,0.2513,0.2967,0.1951,0.2592,0.2931,0.2852,0.2763,0.3341,0.2933,0.251,0.2271,0.3313,0.2798,0.2752,0.2597,0.3202,0.2277,0.2881,0.2247,0.2858,0.2743,0.3193,0.3365,0.3342,0.3042,0.2419,0.2986,0.2591,0.2829,0.2252,0.2128,0.2673,0.3,0.301,0.2735,0.2556,0.2647,0.2352,0.2371,0.292,0.2623,0.2598,0.2817,0.2113,0.2909,0.3175,0.2516,0.2388,0.2109,0.3029,0.28,0.3196,0.3085,0.2676,0.2632,0.2927,0.2804,0.2703,0.3195,0.2702,0.2549,0.2674,0.2422,0.3053,0.252,0.3294,0.273,0.2592,0.2221,0.2894,0.2537,0.2837,0.2731,0.2829,0.2802,0.2208,0.2628,0.2787,0.2735,0.2079,0.2417,0.312,0.2834,0.2604,0.2339,0.2715,0.2051,0.247,0.2407,0.3384,0.3005,0.2514,0.2655,0.2692,0.2715,0.3871,0.2706,0.2992,0.2878,0.2837,0.2573,0.2933,0.2947,0.2804,0.2421,0.2374,0.3138,0.3345,0.2448,0.2346,0.257,0.2832,0.2678,0.3056,0.2431,0.2755,0.2877,0.2529,0.3097,0.2849,0.2474,0.3248,0.2776,0.2841,0.2661,0.2413,0.2925,0.2866,0.2493,0.3246,0.2543,0.2821,0.3242,0.2436,0.2412,0.2771,0.2895,0.2412,0.2512,0.2398,0.3053,0.2803,0.2357,0.2648,0.2539,0.3039,0.2737,0.3083,0.2983,0.2657,0.3018,0.3015,0.2785,0.253,0.2656,0.222,0.2663,0.3265,0.2536,0.2989,0.2761,0.2801,0.2539,0.2269,0.2883,0.246,0.2684,0.261,0.2765,0.2794,0.2639,0.2274,0.2862,0.2358,0.2503,0.2518,0.3782,0.2836,0.286,0.275,0.2808,0.2925,0.3142,0.2824,0.2968,0.2807,0.2415,0.2366,0.2401,0.2223,0.2698,0.2355,0.2616,0.3232,0.2606,0.283,0.2575,0.2947,0.3302,0.2766,0.3154,0.2336,0.257,0.3091,0.2115,0.2626,0.2545,0.2859,0.2435,0.2408,0.3103,0.2649,0.2635,0.3528,0.2614,0.3074,0.2388,0.2412,0.289,0.3073,0.2551,0.2989,0.2832,0.264,0.2742,0.2556,0.2702,0.2845,0.2888,0.2409,0.2756,0.3176,0.2359,0.2976,0.2162,0.2516,0.2891,0.262,0.2145,0.2455,0.2456,0.2639,0.2904,0.2761,0.2684,0.2611,0.2443,0.2577,0.2365,0.2375,0.2751,0.3125,0.2118,0.3121,0.2564,0.3631,0.2734,0.2595,0.239,0.2211,0.2808,0.227,0.2555,0.2371,0.2657,0.321,0.3116,0.2742,0.3053,0.2636,0.1753,0.2793,0.2732,0.2365,0.2672,0.2598,0.2423,0.2798,0.2422,0.3143,0.274,0.2546,0.2368,0.2585,0.2647,0.276,0.25,0.2748,0.275,0.264,0.2604,0.2317,0.2732,0.268,0.2519,0.253,0.263,0.2407,0.2843,0.3438,0.2819,0.2221,0.3459,0.2394,0.2353,0.2267,0.2792,0.2551,0.2851,0.3027,0.2903,0.2518,0.2314,0.2411,0.2358,0.2496,0.3109,0.2678,0.2713,0.2403,0.2391,0.2724,0.3103,0.31,0.2104,0.2694,0.2825,0.2377,0.2786,0.2922,0.3197,0.2362,0.2518,0.2629,0.2789,0.2438,0.2035,0.2816,0.2901,0.2361,0.2831,0.2416,0.2444,0.2651,0.2888,0.2628,0.2338,0.2873,0.2625,0.2526,0.308,0.2445,0.2709,0.2561,0.3282,0.2958,0.2874,0.2726,0.2472,0.3006,0.2636,0.2675,0.2603,0.3548,0.254,0.2438,0.2632,0.3053,0.2268,0.2958,0.2682,0.2514,0.2775,0.266,0.3557,0.2452,0.3034,0.2278,0.2668,0.2593,0.2164,0.2667,0.3379,0.2512,0.2788,0.2271,0.2964,0.2905,0.2365,0.3134,0.2693,0.288,0.3032,0.2382,0.295,0.2285,0.2491,0.2686,0.2776,0.3272,0.2773,0.2368,0.2919,0.2974,0.2778,0.2945,0.2678,0.2853,0.3049,0.2824,0.2442,0.2654,0.322,0.3574,0.2595,0.2869,0.2309,0.31,0.2955,0.2515,0.3247,0.3588,0.2392,0.2714,0.2722,0.2597,0.2607,0.2189,0.3156,0.2538,0.3077,0.2594,0.2292,0.2121,0.2471,0.2721,0.2332,0.2753,0.3123,0.2776,0.2605,0.2618,0.2987,0.249,0.2303,0.2334,0.263,0.2763,0.2841,0.2469,0.2349,0.258,0.2677,0.3032,0.2918,0.2742,0.269,0.3058,0.283,0.2802,0.2852,0.2871,0.219,0.2512,0.2968,0.332,0.3082,0.2561,0.2239,0.2497,0.2547,0.2614,0.2902,0.2379,0.2078,0.3118,0.2849,0.2719,0.3259,0.3346,0.2398,0.2418,0.2626,0.2036,0.2921,0.2761,0.311,0.2477,0.2956,0.2877,0.2801,0.273,0.3054,0.2354,0.2754,0.235,0.2398,0.2629,0.2833,0.2396,0.2427,0.213,0.2722,0.292,0.2596,0.2856,0.2245,0.2824,0.2348,0.2876,0.3295,0.1922,0.3039,0.2743,0.2615,0.3031,0.2249,0.2914,0.2604,0.2403,0.2412,0.2547,0.2509,0.2537,0.2415,0.2563,0.2649,0.2432,0.2963,0.3246,0.2649,0.2194,0.2618,0.2596,0.2741,0.286,0.2655,0.2449,0.2431,0.2218,0.2568,0.2728,0.264,0.3146,0.2773,0.3265,0.2989,0.2488,0.2468,0.2984,0.2782,0.1898,0.2642,0.2837,0.2726,0.2545,0.277,0.2962,0.2172,0.3322,0.211,0.2607,0.3059,0.2775,0.2874,0.2457,0.2675,0.2881,0.2829,0.2697,0.2924,0.3055,0.2773,0.226,0.2354,0.2863,0.2047,0.2569,0.3043,0.2234,0.2725,0.3132,0.3224,0.2801,0.3308,0.2421,0.2549,0.2781,0.2869,0.2445,0.2613,0.2395,0.2588,0.3152,0.2831,0.2853,0.3036,0.2327,0.2822,0.2608,0.2268,0.2669,0.246,0.2586,0.2926,0.3547,0.2914,0.2781,0.2674,0.2174,0.292,0.2429,0.2093,0.2908,0.2806,0.2603,0.2553,0.2628,0.3024,0.2966,0.3152,0.2925,0.2974,0.2529,0.2722,0.2423,0.2154,0.2014,0.255,0.302,0.2905,0.2939,0.3166,0.2378,0.2465,0.273,0.2489,0.302,0.2646,0.2654,0.3346,0.3226,0.2246,0.283,0.2543,0.2347,0.3451,0.2911,0.2592,0.2575,0.2969,0.2735,0.2849,0.2834,0.2542,0.2416,0.2242,0.2997,0.2409,0.237,0.2797,0.2972,0.2589,0.2334,0.2579,0.3122,0.2137,0.2598,0.2619,0.2923,0.3226,0.2659,0.2568,0.2946,0.2234,0.2372,0.2253,0.2965,0.3081,0.2494,0.2725,0.2747,0.2454,0.3042,0.2592,0.2585,0.2526,0.2999,0.2353,0.3616,0.2231,0.2735,0.2913,0.2493,0.2797,0.352,0.2791,0.2888,0.2814,0.2584,0.26,0.2006,0.2788,0.2422,0.2398,0.2472,0.2601,0.2468,0.2727,0.2812,0.2358,0.2651,0.3323,0.2212,0.2816,0.2191,0.2907,0.3097,0.2437,0.2476,0.2588,0.2757,0.2721,0.3155,0.3197,0.2426,0.2687,0.3228,0.2606,0.2852,0.2932,0.2544,0.2833,0.2681,0.1878,0.2246,0.3353,0.2901,0.1931,0.2609,0.2784,0.2731,0.2843,0.2466,0.2519,0.2602,0.2437,0.2628,0.2746,0.2449,0.2769,0.2548,0.2395,0.3579,0.3038,0.2641,0.2727,0.299,0.2562,0.2684,0.2351,0.2966,0.2601,0.2495,0.2312,0.2725,0.3007,0.2575,0.202,0.2529,0.2732,0.2481,0.3279,0.2406,0.3169,0.2657,0.2843,0.2304,0.299,0.2678,0.3142,0.3186,0.2587,0.3067,0.2792,0.2409,0.2801,0.2484,0.2786,0.3318,0.2496,0.2859,0.2499,0.305,0.2657,0.2429,0.2687,0.2553,0.2606,0.2585,0.3292,0.246,0.2565,0.2419,0.231,0.2963,0.2805,0.2531,0.2442,0.248,0.2366,0.2616,0.2557,0.3669,0.2768,0.3052,0.2488,0.2306,0.2325,0.3224,0.2932,0.2713,0.2675,0.2601,0.2594,0.259,0.3078,0.2743,0.281,0.3156,0.2895,0.2432,0.263,0.2643,0.2697,0.3458,0.248,0.284,0.1949,0.2894,0.3048,0.2849,0.2685,0.2378,0.2105,0.2495,0.2778,0.2387,0.2587,0.2737,0.3073,0.3284,0.2451,0.2875,0.263,0.2961,0.2951,0.2924,0.2341,0.3025,0.3296,0.2397,0.2716,0.291,0.2701,0.2279,0.3383,0.2698,0.2709,0.288,0.2752,0.2839,0.2817,0.2567,0.2681,0.2565,0.2409,0.2682,0.2513,0.3233,0.2957,0.2519,0.2895,0.2801,0.2597,0.2111,0.2188,0.2918,0.2438,0.2555,0.2659,0.2872,0.2892,0.2565,0.2392,0.2449,0.2763,0.2523,0.2952,0.2214,0.2883,0.2438,0.2691,0.3002,0.2744,0.2543,0.2462,0.2819,0.2507,0.2711,0.2571,0.2537,0.2938,0.2269,0.2862,0.2647,0.2085,0.2739,0.2798,0.2744,0.2118,0.2644,0.2431,0.2524,0.2283,0.3186,0.3102,0.3293,0.3368,0.2552,0.343,0.2976,0.3295,0.2528,0.2216],"random_corr_share_lower":0.0,"random_vol_share_lower":0.2925,"vol_basket":0.1491,"vol_all":0.1423,"vol_random_median":0.1562,"vol_single_basket":0.2567,"vol_single_all":0.2448,"basket_sel":["CIPLA","SBIN","MAXHEALTH","HINDUNILVR","ONGC","ETERNAL","JIOFIN","TCS","BAJAJ-AUTO","POWERGRID"],"oos":{"labels":["Selection years","Check years"],"basket":[0.141,0.2262],"all":[0.2651,0.2804]},"gold_avg":0.045,"gold_min":-0.04,"gold_max":0.21,"lowest5":[["MAXHEALTH",0.149],["CIPLA",0.152],["DRREDDY",0.184],["ONGC",0.187],["HINDUNILVR",0.203]],"highest5":[["GRASIM",0.353],["LT",0.347],["BAJAJFINSV",0.34],["JSWSTEEL",0.336],["ULTRACEMCO",0.336]],"jiofin_days":808,"corporate_actions":[["TMPV","2025-10-14","Tata Motors demerger of its commercial vehicle business (ex-date)"]]};
+
+// ---------- numbers and text
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const day = (iso) => { const [y, m, d] = iso.split("-").map(Number); return `${d} ${MONTHS[m - 1]} ${y}`; };
+const pct = (x, dp = 1) => `${(x * 100).toFixed(dp)}%`;
+const int = (x) => Number(x).toLocaleString("en-IN");
+const pos = Object.fromEntries(DATA.order.map((s, i) => [s, i]));
+const corr = (a, b) => DATA.corr[pos[a]][pos[b]];
+const list = (items) => items.length > 1 ? `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}` : items.join("");
+
+function topPairs(n) {
+  const out = [];
+  for (let i = 0; i < DATA.order.length; i++)
+    for (let j = i + 1; j < DATA.order.length; j++) out.push([DATA.order[i], DATA.order[j], DATA.corr[i][j]]);
+  return out.sort((a, b) => b[2] - a[2]).slice(0, n);
+}
+
+function trapExample() {
+  const low = Object.entries(DATA.avg).sort((a, b) => a[1] - b[1]).slice(0, 10).map(([s]) => s);
+  let best = null;
+  for (let i = 0; i < low.length; i++)
+    for (let j = i + 1; j < low.length; j++) {
+      const a = low[i], b = low[j];
+      if (DATA.sectors[a] === DATA.sectors[b] && (!best || corr(a, b) > best[2])) best = [a, b, corr(a, b)];
+    }
+  if (!best) return "";
+  return `${best[0]} and ${best[1]} both rank among the ten lowest averages, yet move together at ${best[2].toFixed(2)}.`;
+}
+
+function fillText() {
+  const k = DATA.basket_size, draws = DATA.random_avg_pair.length;
+  const lowerShare = DATA.random_corr_share_lower;
+  const beaten = Math.round((1 - lowerShare) * draws);
+  const overlap = DATA.basket_sel.filter((s) => DATA.basket.includes(s)).length;
+  const [selB, chkB] = DATA.oos.basket, [selA, chkA] = DATA.oos.all;
+  const values = {
+    basket_size: k, stocks: DATA.stocks, others: DATA.stocks - 1, days: int(DATA.days), pairs: int(DATA.pairs),
+    period: `${day(DATA.start)} to ${day(DATA.end)}`, jiofin_days: int(DATA.jiofin_days || 0),
+    basket_pairs: DATA.basket_pairs.toFixed(3), all_pairs3: DATA.all_pairs.toFixed(3), all_pairs2: DATA.all_pairs.toFixed(2),
+    random_beaten: `${int(beaten)} of ${int(draws)}`,
+    random_beaten_sub: beaten === draws ? "none was less correlated" : `${int(draws - beaten)} were less correlated`,
+    oos_check_basket: chkB.toFixed(3), oos_check_all: chkA.toFixed(3),
+    sel_years: `${day(DATA.selection_years[0])} to ${day(DATA.selection_years[1])}`,
+    chk_years: `${day(DATA.check_years[0])} to ${day(DATA.check_years[1])}`,
+    gold_avg: DATA.gold_avg.toFixed(3), gold_min: DATA.gold_min.toFixed(2), gold_max: DATA.gold_max.toFixed(2),
+    corporate: DATA.corporate_actions.map(([s, d, why]) => `${s} on ${day(d)} (${why})`).join("; "),
+    top_pairs: list(topPairs(3).map(([a, b, v]) => `${a} and ${b} (${v.toFixed(2)})`)),
+    lowest5: list(DATA.lowest5.map(([s, v]) => `${s} ${v.toFixed(2)}`)),
+    highest5: list(DATA.highest5.map(([s]) => s)),
+    first: DATA.path[0], trap: trapExample(),
+    path_2: DATA.path_values[0].toFixed(2), path_k: DATA.path_values[k - 2].toFixed(3),
+    path_last: DATA.path_values[DATA.path_values.length - 1].toFixed(2), path_n: DATA.path.length,
+    draws: int(draws),
+    random_text: beaten === draws
+      ? `Not one of them was as uncorrelated as the chosen basket (${DATA.basket_pairs.toFixed(3)}); the median random basket sat near the market average.`
+      : `${pct(lowerShare)} of them were less correlated than the chosen basket.`,
+    vol_basket: pct(DATA.vol_basket, 2), vol_random: pct(DATA.vol_random_median, 2),
+    vol_beaten: pct(1 - DATA.random_vol_share_lower, 0),
+    vol_single_basket: pct(DATA.vol_single_basket), vol_single_all: pct(DATA.vol_single_all),
+    oos_text: `${overlap} of the ${k} stocks it picked are the same as in the five-year basket. Its average pair correlation rose from ${selB.toFixed(3)} to ${chkB.toFixed(3)}, while all NIFTY 50 pairs went from ${selA.toFixed(3)} to ${chkA.toFixed(3)}: the advantage shrank from ${(selA - selB).toFixed(2)} to ${(chkA - chkB).toFixed(2)}, but held.`,
+  };
+  document.querySelectorAll("[data-fill]").forEach((el) => {
+    const v = values[el.dataset.fill];
+    if (v !== undefined) el.textContent = v;
+  });
+
+  const tbody = document.getElementById("basket-table");
+  tbody.innerHTML = "";
+  DATA.basket_rows.forEach((r) => {
+    const tr = document.createElement("tr");
+    const cells = [
+      [r.order, "n"], [`<span class="swatch" aria-hidden="true"></span>${r.symbol}`, ""], [r.sector, ""],
+      [Number(r.avg_corr_to_nifty50).toFixed(3), "n"], [Number(r.avg_corr_to_basket).toFixed(3), "n"],
+      [r.highest_pair_in_basket, ""],
+    ];
+    cells.forEach(([html, cls]) => { const td = document.createElement("td"); td.innerHTML = html; if (cls) td.className = cls; tr.appendChild(td); });
+    tbody.appendChild(tr);
+  });
+}
+
+// ---------- charts (Plotly), coloured from the page's theme tokens
+const FONT = '"Inter", system-ui, -apple-system, "Segoe UI", sans-serif';
+const CFG = { displayModeBar: false, responsive: true };
+const cssVar = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+function theme() {
+  return {
+    surface: cssVar("--surface"), ink: cssVar("--ink"), ink2: cssVar("--ink-2"), muted: cssVar("--muted"),
+    grid: cssVar("--grid"), axis: cssVar("--axis"), s1: cssVar("--series-1"), s2: cssVar("--series-2"),
+    de: cssVar("--deemph"),
+    div: [[0, cssVar("--div-neg2")], [0.25, cssVar("--div-neg1")], [0.5, cssVar("--div-mid")],
+          [0.75, cssVar("--div-pos1")], [1, cssVar("--div-pos2")]],
+  };
+}
+
+function base(t, height, margin, extra) {
+  return Object.assign({
+    height, paper_bgcolor: t.surface, plot_bgcolor: t.surface,
+    font: { family: FONT, size: 12, color: t.ink2 },
+    margin: Object.assign({ l: 64, r: 24, t: 16, b: 52 }, margin || {}),
+    hoverlabel: { bgcolor: t.surface, bordercolor: t.axis, font: { family: FONT, color: t.ink } },
+    showlegend: false,
+  }, extra || {});
+}
+function axis(t, extra) {
+  return Object.assign({ gridcolor: t.grid, linecolor: t.axis, zeroline: false, tickfont: { color: t.muted },
+                         title: { font: { color: t.muted } } }, extra || {});
+}
+function colorbar(t) {
+  return { title: { text: "correlation", font: { color: t.ink2 } }, tickfont: { color: t.muted },
+           outlinewidth: 0, thickness: 10, len: 0.7 };
+}
+
+function chartHeatmap(t) {
+  const o = DATA.order, inBasket = new Set(DATA.basket);
+  const labels = o.map((s) => (inBasket.has(s) ? `<b>${s}</b>` : s));
+  const text = o.map((a) => o.map((b) => `${a} (${DATA.sectors[a]})<br>${b} (${DATA.sectors[b]})<br>correlation ${corr(a, b).toFixed(2)}`));
+  const shapes = [];
+  for (let i = 1; i < o.length; i++) {
+    if (DATA.sectors[o[i]] !== DATA.sectors[o[i - 1]]) {
+      shapes.push({ type: "line", xref: "x", yref: "paper", x0: i - 0.5, x1: i - 0.5, y0: 0, y1: 1, line: { color: t.ink2, width: 0.8 } });
+      shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: i - 0.5, y1: i - 0.5, line: { color: t.ink2, width: 0.8 } });
+    }
+  }
+  Plotly.react("chart-heatmap", [{
+    type: "heatmap", z: DATA.corr, x: labels, y: labels, zmin: -1, zmax: 1, zmid: 0, colorscale: t.div,
+    text, hovertemplate: "%{text}<extra></extra>", xgap: 1, ygap: 1, colorbar: colorbar(t),
+  }], base(t, 820, { l: 100, b: 100, t: 8, r: 8 }, {
+    xaxis: axis(t, { tickangle: -60, tickfont: { size: 10, color: t.ink2 }, showgrid: false }),
+    yaxis: axis(t, { autorange: "reversed", tickfont: { size: 10, color: t.ink2 }, showgrid: false }),
+    shapes,
+  }), CFG);
+}
+
+function chartRanked(t) {
+  const ranked = Object.entries(DATA.avg).sort((a, b) => b[1] - a[1]);  // first bar is drawn at the bottom
+  const inBasket = new Set(DATA.basket);
+  const trace = (flag, name, color) => {
+    const rows = ranked.filter(([s]) => inBasket.has(s) === flag);
+    return {
+      type: "bar", orientation: "h", name, x: rows.map((r) => r[1]), y: rows.map((r) => r[0]),
+      marker: { color }, customdata: rows.map((r) => DATA.sectors[r[0]]),
+      text: flag ? rows.map((r) => r[1].toFixed(2)) : undefined, textposition: "outside", cliponaxis: false,
+      textfont: { color: t.ink2, family: FONT },
+      hovertemplate: "%{y} (%{customdata})<br>average correlation %{x:.3f}<extra></extra>",
+    };
+  };
+  Plotly.react("chart-ranked", [trace(true, "In the basket", t.s1), trace(false, "Other NIFTY 50 stocks", t.de)],
+    base(t, 140 + 18 * ranked.length, { l: 104, t: 40, r: 40 }, {
+      showlegend: true, legend: { orientation: "h", x: 0, y: 1, yanchor: "bottom", font: { color: t.ink2 } },
+      barmode: "overlay", bargap: 0.28, barcornerradius: 4,
+      yaxis: axis(t, { categoryorder: "array", categoryarray: ranked.map((r) => r[0]), showgrid: false,
+                       tickfont: { size: 11, color: t.ink2 } }),
+      xaxis: axis(t, { rangemode: "tozero", title: { text: "average correlation with the other stocks", font: { color: t.muted } } }),
+    }), CFG);
+}
+
+function chartPath(t) {
+  const sizes = DATA.path_values.map((_, i) => i + 2), k = DATA.basket_size;
+  Plotly.react("chart-path", [{
+    type: "scatter", mode: "lines+markers", x: sizes, y: DATA.path_values,
+    line: { color: t.s1, width: 2 }, marker: { size: 8, color: t.s1, line: { color: t.surface, width: 2 } },
+    customdata: sizes.map((n) => DATA.path[n - 1]),
+    hovertemplate: "%{x} stocks, last added %{customdata}<br>average pair correlation %{y:.3f}<extra></extra>",
+  }], base(t, 400, { t: 24 }, {
+    xaxis: axis(t, { dtick: 1, title: { text: "stocks in the basket", font: { color: t.muted } } }),
+    yaxis: axis(t, { rangemode: "tozero", title: { text: "average pair correlation", font: { color: t.muted } } }),
+    shapes: [{ type: "line", xref: "paper", x0: 0, x1: 1, y0: DATA.all_pairs, y1: DATA.all_pairs, line: { color: t.muted, width: 1 } }],
+    annotations: [
+      { xref: "paper", x: 1, y: DATA.all_pairs, xanchor: "right", yshift: 10, showarrow: false,
+        text: `all NIFTY 50 pairs ${DATA.all_pairs.toFixed(2)}`, font: { color: t.ink2 } },
+      { x: k, y: DATA.path_values[k - 2], showarrow: true, arrowcolor: t.muted, ax: 0, ay: -44,
+        text: `chosen: ${k} stocks, ${DATA.path_values[k - 2].toFixed(3)}`, font: { color: t.ink } },
+    ],
+  }), CFG);
+}
+
+function chartRandom(t) {
+  const draws = DATA.random_avg_pair.length;
+  Plotly.react("chart-random", [{
+    type: "histogram", x: DATA.random_avg_pair, nbinsx: 40, marker: { color: t.de, line: { color: t.surface, width: 1 } },
+    hovertemplate: "average pair correlation %{x}<br>%{y} random baskets<extra></extra>",
+  }], base(t, 400, { t: 24 }, {
+    bargap: 0.04,
+    xaxis: axis(t, { title: { text: `average pair correlation of ${int(draws)} random baskets`, font: { color: t.muted } } }),
+    yaxis: axis(t, { title: { text: "random baskets", font: { color: t.muted } } }),
+    shapes: [
+      { type: "line", yref: "paper", x0: DATA.basket_pairs, x1: DATA.basket_pairs, y0: 0, y1: 1, line: { color: t.s1, width: 2 } },
+      { type: "line", yref: "paper", x0: DATA.all_pairs, x1: DATA.all_pairs, y0: 0, y1: 1, line: { color: t.muted, width: 1 } },
+    ],
+    annotations: [
+      { x: DATA.basket_pairs, y: 1, yref: "paper", xanchor: "left", xshift: 6, showarrow: false,
+        text: `chosen basket ${DATA.basket_pairs.toFixed(3)}`, font: { color: t.ink } },
+      { x: DATA.all_pairs, y: 0.9, yref: "paper", xanchor: "left", xshift: 6, showarrow: false,
+        text: `all pairs ${DATA.all_pairs.toFixed(2)}`, font: { color: t.ink2 } },
+    ],
+  }), CFG);
+}
+
+function chartBasket(t) {
+  const b = DATA.basket;
+  const z = b.map((r) => b.map((c) => corr(r, c)));
+  const text = b.map((r) => b.map((c) => (r === c ? "" : corr(r, c).toFixed(2))));
+  Plotly.react("chart-basket", [{
+    type: "heatmap", z, x: b, y: b, zmin: -1, zmax: 1, zmid: 0, colorscale: t.div, text, texttemplate: "%{text}",
+    textfont: { color: t.ink, size: 12, family: FONT }, xgap: 2, ygap: 2, colorbar: colorbar(t),
+    customdata: b.map((r) => b.map((c) => `${r} (${DATA.sectors[r]}) and ${c} (${DATA.sectors[c]})`)),
+    hovertemplate: "%{customdata}<br>correlation %{z:.3f}<extra></extra>",
+  }], base(t, 520, { l: 96, b: 96, t: 8, r: 8 }, {
+    xaxis: axis(t, { tickangle: -45, showgrid: false, tickfont: { color: t.ink2 } }),
+    yaxis: axis(t, { autorange: "reversed", showgrid: false, tickfont: { color: t.ink2 } }),
+  }), CFG);
+}
+
+function chartOos(t) {
+  const labels = [`Selection years<br>${day(DATA.selection_years[0])} to ${day(DATA.selection_years[1])}`,
+                  `Check years<br>${day(DATA.check_years[0])} to ${day(DATA.check_years[1])}`];
+  const trace = (name, y, color) => ({
+    type: "bar", name, x: labels, y, marker: { color }, text: y.map((v) => v.toFixed(3)), textposition: "outside",
+    cliponaxis: false, textfont: { color: t.ink2, family: FONT }, hovertemplate: `${name}<br>%{y:.3f}<extra></extra>`,
+  });
+  Plotly.react("chart-oos", [
+    trace("Basket picked on the selection years", DATA.oos.basket, t.s1),
+    trace("All NIFTY 50 pairs", DATA.oos.all, t.s2),
+  ], base(t, 400, { t: 48 }, {
+    showlegend: true, legend: { orientation: "h", x: 0, y: 1.02, yanchor: "bottom", font: { color: t.ink2 } },
+    barmode: "group", bargap: 0.5, bargroupgap: 0.1, barcornerradius: 4,
+    xaxis: axis(t, { showgrid: false, tickfont: { color: t.ink2 } }),
+    yaxis: axis(t, { rangemode: "tozero", title: { text: "average pair correlation", font: { color: t.muted } } }),
+  }), CFG);
+}
+
+function renderCharts() {
+  if (!window.Plotly) {
+    document.querySelectorAll(".chart").forEach((el) => {
+      el.textContent = "The charts need the Plotly library, which did not load. The tables and text above hold the same figures.";
+    });
+    return;
+  }
+  const t = theme();
+  [chartBasket, chartHeatmap, chartRanked, chartPath, chartRandom, chartOos].forEach((draw) => {
+    try { draw(t); } catch (e) { console.error(e); }
+  });
+}
+
+fillText();
+renderCharts();
+// Redraw in the other palette when the viewer's theme changes.
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", renderCharts);
+new MutationObserver(renderCharts).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+</script>

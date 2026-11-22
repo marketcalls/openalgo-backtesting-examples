@@ -1,0 +1,476 @@
+<title>Least-Correlated NIFTY 50 Stocks</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column of numbered method steps, each followed by its chart in a full-width panel. */
+:root {
+  --page: #f6f6f3;
+  --surface: #fcfcfb;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --muted: #6f6d68;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --line: rgba(11, 11, 11, 0.10);
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --deemph: #c3c2b7;
+  --div-neg2: #184f95;
+  --div-neg1: #5598e7;
+  --div-mid: #f0efec;
+  --div-pos1: #e97f7e;
+  --div-pos2: #a8302f;
+  --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page: #0d0d0d; --surface: #1a1a19; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #a3a19b;
+    --grid: #2c2c2a; --axis: #383835; --line: rgba(255, 255, 255, 0.10);
+    --series-1: #3987e5; --series-2: #d95926; --deemph: #52514e;
+    --div-neg2: #6da7ec; --div-neg1: #2d4f7a; --div-mid: #383835; --div-pos1: #7a3534; --div-pos2: #e66767;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --page: #0d0d0d; --surface: #1a1a19; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #a3a19b;
+  --grid: #2c2c2a; --axis: #383835; --line: rgba(255, 255, 255, 0.10);
+  --series-1: #3987e5; --series-2: #d95926; --deemph: #52514e;
+  --div-neg2: #6da7ec; --div-neg1: #2d4f7a; --div-mid: #383835; --div-pos1: #7a3534; --div-pos2: #e66767;
+  color-scheme: dark;
+}
+body {
+  background: var(--page); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1040px; margin: 0 auto; padding-block: 40px 72px; display: grid; gap: 56px; }
+h1, h2, h3 { font-family: var(--font-display); color: var(--ink); text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(30px, 5vw, 44px); line-height: 1.12; font-weight: 600; letter-spacing: -0.01em; }
+h2 { font-size: 26px; line-height: 1.2; font-weight: 600; }
+h3 { font-size: 19px; line-height: 1.3; font-weight: 600; }
+p { margin: 0; max-width: 68ch; }
+.prose { display: grid; gap: 14px; }
+.eyebrow { font-family: var(--font-data); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.lead { font-size: 18px; color: var(--ink-2); }
+.meta { font-family: var(--font-data); font-size: 13px; color: var(--muted); }
+header { display: grid; gap: 16px; }
+.num { font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; }
+.tile { border-top: 2px solid var(--ink); padding-top: 12px; display: grid; gap: 6px; align-content: start; }
+.tile .label { font-size: 13px; color: var(--ink-2); }
+.tile .value { font-family: var(--font-display); font-size: 34px; line-height: 1.1; font-weight: 600; }
+.tile .sub { font-size: 13px; color: var(--muted); }
+.tile.accent { border-top-color: var(--series-1); }
+
+section { display: grid; gap: 20px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px; min-width: 0; }
+.scroll { overflow-x: auto; }
+.chart { width: 100%; min-height: 200px; }
+.chart.wide { min-width: 760px; }
+.caption { font-size: 13px; color: var(--muted); margin-top: 6px; }
+
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+th { font-weight: 500; color: var(--ink-2); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; }
+td.n { text-align: right; font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+th.n { text-align: right; }
+tbody tr:last-child td { border-bottom: none; }
+.swatch { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--series-1); margin-right: 8px; vertical-align: middle; }
+
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 48px; counter-reset: step; }
+.steps > li { display: grid; gap: 16px; counter-increment: step; }
+.step-head { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: baseline; }
+.step-head::before {
+  content: counter(step); font-family: var(--font-data); font-size: 14px; color: var(--series-1);
+  border: 1px solid var(--series-1); border-radius: 50%; width: 28px; height: 28px; display: grid; place-items: center;
+}
+.why { border-left: 2px solid var(--grid); padding-left: 14px; color: var(--ink-2); }
+.why strong { color: var(--ink); font-weight: 600; }
+ul.limits { margin: 0; padding-left: 20px; display: grid; gap: 12px; max-width: 72ch; }
+ul.limits li { padding-left: 4px; }
+.notes { font-size: 14px; color: var(--ink-2); display: grid; gap: 8px; }
+code { font-family: var(--font-data); font-size: 0.9em; background: var(--grid); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+@media (max-width: 520px) { .wrap { gap: 44px; padding-block: 28px 56px; } .lead { font-size: 16px; } }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+
+<main class="wrap">
+  <header>
+    <div class="eyebrow">Research 01 &middot; NIFTY 50 &middot; daily data from Historify</div>
+    <h1>Which NIFTY 50 stocks move least alike?</h1>
+    <p class="lead">A diversified portfolio needs holdings that do not rise and fall on the same days. This page measures how alike every pair of NIFTY 50 stocks moved over five years, picks the <span data-fill="basket_size"></span> that move least alike, and explains each step so you can repeat it.</p>
+    <p class="meta"><span data-fill="period"></span> &middot; <span data-fill="stocks"></span> stocks &middot; <span data-fill="days"></span> trading days &middot; <span data-fill="pairs"></span> pairs</p>
+  </header>
+
+  <section class="tiles" aria-label="Key figures">
+    <div class="tile accent"><div class="label">Basket's average pair correlation</div><div class="value num" data-fill="basket_pairs"></div><div class="sub">against <span data-fill="all_pairs3"></span> for all NIFTY 50 pairs</div></div>
+    <div class="tile"><div class="label">Random <span data-fill="basket_size"></span>-stock baskets it beat</div><div class="value num" data-fill="random_beaten"></div><div class="sub" data-fill="random_beaten_sub"></div></div>
+    <div class="tile"><div class="label">On years the method never saw</div><div class="value num" data-fill="oos_check_basket"></div><div class="sub">against <span data-fill="oos_check_all"></span> for all pairs (picked on <span data-fill="sel_years"></span>)</div></div>
+    <div class="tile"><div class="label">Gold ETF against these stocks</div><div class="value num" data-fill="gold_avg"></div><div class="sub">GOLDBEES, average correlation with the <span data-fill="stocks"></span> stocks</div></div>
+  </section>
+
+  <section>
+    <div class="prose">
+      <h2>The basket</h2>
+      <p>Ten stocks from ten sectors, in the order the method picked them. The two correlation columns are the stock's average with all other NIFTY 50 stocks and with the rest of the basket.</p>
+    </div>
+    <div class="panel scroll"><table>
+      <thead><tr><th>#</th><th>Stock</th><th>Sector</th><th class="n">With NIFTY 50</th><th class="n">With the basket</th><th>Most alike in the basket</th></tr></thead>
+      <tbody id="basket-table"></tbody>
+    </table></div>
+    <div class="panel"><div id="chart-basket" class="chart" role="img" aria-label="Heatmap of the correlation between every pair of stocks in the basket"></div></div>
+    <p class="caption">Every pair inside the basket. Grey cells are close to 0 (unrelated); red cells move together. Hover for exact values.</p>
+  </section>
+
+  <section>
+    <div class="prose">
+      <h2>How to select low-correlation stocks, step by step</h2>
+      <p>The method has eight steps. Each one says what was done and why, so you can apply it to any group of stocks.</p>
+    </div>
+    <ol class="steps">
+      <li>
+        <div class="step-head"><h3>Use clean daily closes</h3></div>
+        <div class="prose">
+          <p>Correlation compares how prices change from one day to the next, so every stock needs complete, comparable data. Daily closes from Historify cover all <span data-fill="stocks"></span> stocks over the same <span data-fill="days"></span> trading days (JIOFIN only from its listing in August 2023, <span data-fill="jiofin_days"></span> days).</p>
+          <p class="why"><strong>Why daily, not 1-minute.</strong> On 1-minute candles, stocks that react to the same news a few seconds apart look less related than they are, and the noise of single trades drowns the pattern. Daily closes measure what a positional investor actually holds through.</p>
+          <p class="why"><strong>Why check for jumps.</strong> A split, bonus or demerger shows as a price drop that nobody lost money on, and it would distort every pair that stock is in. These prices are already adjusted for splits and bonuses; one day is left out: <span data-fill="corporate"></span>. Real crashes, such as the Adani falls of early 2023 and the election-result day of 4 Jun 2024, stay in. Those are exactly the days diversification is for.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-head"><h3>Compare daily returns, not prices</h3></div>
+        <div class="prose">
+          <p>Turn each price series into daily percentage changes, then compare those.</p>
+          <p class="why"><strong>Why.</strong> Two stocks that both doubled over five years have price charts that look alike even if their good and bad days never matched. Daily returns ask the useful question: on the days one stock rose, did the other rise too?</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-head"><h3>Measure every pair</h3></div>
+        <div class="prose">
+          <p>The correlation of two return series runs from +1 (always move together) through 0 (unrelated) to -1 (always opposite). With <span data-fill="stocks"></span> stocks there are <span data-fill="pairs"></span> pairs, and the average pair is <span data-fill="all_pairs2" class="num"></span>.</p>
+          <p class="why"><strong>What it shows.</strong> NIFTY 50 stocks mostly move a little alike, because the whole market reacts to the same news. In the map, grouped by sector, the red blocks along the diagonal are businesses that move together: the most alike pairs are <span data-fill="top_pairs"></span>. Owning two of those is close to owning one twice.</p>
+        </div>
+        <div class="panel scroll"><div id="chart-heatmap" class="chart wide" role="img" aria-label="Heatmap of the correlation between every pair of NIFTY 50 stocks, grouped by sector"></div></div>
+        <p class="caption">All <span data-fill="pairs"></span> pairs, grouped by sector, with the basket in bold. Hover any cell for its value. On a phone, scroll the map sideways.</p>
+      </li>
+      <li>
+        <div class="step-head"><h3>Rank each stock against the rest</h3></div>
+        <div class="prose">
+          <p>Average each stock's correlation with the other <span data-fill="others"></span>. A low average marks a stock that often goes its own way.</p>
+          <p class="why"><strong>What it shows.</strong> Hospitals, pharma, oil and FMCG lead (<span data-fill="lowest5"></span>), while <span data-fill="highest5"></span> move most like the market. This ranking is a starting list, not the answer: see the next step.</p>
+        </div>
+        <div class="panel"><div id="chart-ranked" class="chart" role="img" aria-label="Bar chart of each stock's average correlation with the other NIFTY 50 stocks, lowest first, basket highlighted"></div></div>
+      </li>
+      <li>
+        <div class="step-head"><h3>Build the basket one stock at a time, one per sector</h3></div>
+        <div class="prose">
+          <p>Start with the stock that has the lowest average (<span data-fill="first" class="num"></span>). Then repeatedly add the stock with the lowest average correlation to the stocks already chosen, taking at most one stock from each sector.</p>
+          <p class="why"><strong>Why not just take the ten lowest averages.</strong> A low average says nothing about how two low-average stocks relate to each other. <span data-fill="trap"></span> Building step by step checks every new stock against the ones already in the basket.</p>
+          <p class="why"><strong>Why one per sector.</strong> Companies in the same business share risks that past prices may understate: a drug-pricing rule hits every pharma stock, a banking regulation every bank. The sector cap spreads the basket across different businesses, the closest a stock basket gets to different asset classes.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-head"><h3>Choose how many stocks</h3></div>
+        <div class="prose">
+          <p>Each new stock is the best one left, so the basket's average pair correlation can only climb as it grows: <span data-fill="path_2"></span> with 2 stocks, <span data-fill="path_k"></span> with <span data-fill="basket_size"></span>, and <span data-fill="path_last"></span> with <span data-fill="path_n"></span> (one from every sector).</p>
+          <p class="why"><strong>The trade-off.</strong> Fewer stocks keep correlation lower, but each company's own news (a bad quarter, a fraud, a regulator's order) becomes a bigger share of the money. Ten stocks is a common middle ground: each holds a tenth of the money, and the basket still sits far below the market's <span data-fill="all_pairs2"></span>.</p>
+        </div>
+        <div class="panel"><div id="chart-path" class="chart" role="img" aria-label="Line chart of the basket's average pair correlation as stocks are added"></div></div>
+      </li>
+      <li>
+        <div class="step-head"><h3>Check that it beats chance</h3></div>
+        <div class="prose">
+          <p>Draw <span data-fill="draws"></span> random <span data-fill="basket_size"></span>-stock baskets from the same <span data-fill="stocks"></span> stocks and measure each the same way. <span data-fill="random_text"></span></p>
+          <p class="why"><strong>Low correlation is not low volatility.</strong> An equal-weight basket of these stocks swung <span data-fill="vol_basket"></span> a year, against <span data-fill="vol_random"></span> for the median random basket: lower than <span data-fill="vol_beaten"></span> of them, a smaller gain than the correlation suggests. The chosen stocks swing more on their own (<span data-fill="vol_single_basket"></span> a year against <span data-fill="vol_single_all"></span> for the median NIFTY 50 stock), which offsets part of the benefit. Correlation decides how much the stocks offset each other; it does not change how much each one moves.</p>
+        </div>
+        <div class="panel"><div id="chart-random" class="chart" role="img" aria-label="Histogram of average pair correlation for random baskets, with the chosen basket marked"></div></div>
+      </li>
+      <li>
+        <div class="step-head"><h3>Test it on years it never saw</h3></div>
+        <div class="prose">
+          <p>The method was run again on the first three years only (<span data-fill="sel_years"></span>), and the basket it chose was measured on the two years after (<span data-fill="chk_years"></span>).</p>
+          <p class="why"><strong>Why.</strong> A basket picked with five years of hindsight is bound to look good on those five years. The honest test is whether a basket picked in the past stayed less correlated in the future. <span data-fill="oos_text"></span> Correlations drift, so re-check the basket once a year.</p>
+        </div>
+        <div class="panel"><div id="chart-oos" class="chart" role="img" aria-label="Grouped bar chart comparing the basket's average pair correlation with all NIFTY 50 pairs in the selection and check years"></div></div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>What this does not do</h2>
+    <ul class="limits">
+      <li><strong>It does not find an uncorrelated asset class.</strong> Every stock here is an Indian large-cap equity, and in a market-wide shock they fall together: on 4 Jun 2024, the election-result day, ONGC fell 16.8 percent, POWERGRID 12.4 percent and ADANIENT 19.3 percent, all three in the basket. A holding that truly moves on its own sits outside equities: the gold ETF GOLDBEES had an average correlation of <span data-fill="gold_avg" class="num"></span> with these stocks (from <span data-fill="gold_min"></span> to <span data-fill="gold_max"></span>), lower than any stock basket here.</li>
+      <li><strong>It does not say the basket makes money.</strong> Correlation measures whether stocks move together, not whether they rise. The next step is a backtest of the basket (equal weight, rebalanced every year) against NIFTYBEES and the 60:40 NIFTYBEES and GOLDBEES mix.</li>
+      <li><strong>It does not set weights.</strong> Every stock counts equally here. Giving steadier stocks more money is a separate step.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Method and data</h2>
+    <div class="notes">
+      <p><strong>Data.</strong> Daily closes from Historify on the OpenAlgo server, <span data-fill="period"></span>, for <span data-fill="stocks"></span> of the 50 NIFTY 50 stocks (the 50th constituent was not found in Historify).</p>
+      <p><strong>Measure.</strong> Pearson correlation of daily close-to-close returns; each pair uses the days both stocks traded.</p>
+      <p><strong>Sectors.</strong> Broad groups set by hand (banks, finance and insurance, IT, oil gas and coal, power, FMCG, auto, metals, pharma, hospitals, cement and materials, capital goods and defence, telecom, consumer and retail, transport, diversified). NSE's own industry names differ in places.</p>
+      <p><strong>Checks.</strong> Out of sample: picked on <span data-fill="sel_years"></span>, measured on <span data-fill="chk_years"></span>. Random baskets: <span data-fill="draws"></span> draws with a fixed seed, so the figures repeat on every run.</p>
+      <p><strong>Reproduce.</strong> <code>research/01_nifty50_low_correlation/select_basket.py</code> in the backtesting examples folder fetches the data, writes this page and saves every number as CSV.</p>
+    </div>
+  </section>
+</main>
+
+<script>
+const DATA = __DATA__;
+
+// ---------- numbers and text
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const day = (iso) => { const [y, m, d] = iso.split("-").map(Number); return `${d} ${MONTHS[m - 1]} ${y}`; };
+const pct = (x, dp = 1) => `${(x * 100).toFixed(dp)}%`;
+const int = (x) => Number(x).toLocaleString("en-IN");
+const pos = Object.fromEntries(DATA.order.map((s, i) => [s, i]));
+const corr = (a, b) => DATA.corr[pos[a]][pos[b]];
+const list = (items) => items.length > 1 ? `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}` : items.join("");
+
+function topPairs(n) {
+  const out = [];
+  for (let i = 0; i < DATA.order.length; i++)
+    for (let j = i + 1; j < DATA.order.length; j++) out.push([DATA.order[i], DATA.order[j], DATA.corr[i][j]]);
+  return out.sort((a, b) => b[2] - a[2]).slice(0, n);
+}
+
+function trapExample() {
+  const low = Object.entries(DATA.avg).sort((a, b) => a[1] - b[1]).slice(0, 10).map(([s]) => s);
+  let best = null;
+  for (let i = 0; i < low.length; i++)
+    for (let j = i + 1; j < low.length; j++) {
+      const a = low[i], b = low[j];
+      if (DATA.sectors[a] === DATA.sectors[b] && (!best || corr(a, b) > best[2])) best = [a, b, corr(a, b)];
+    }
+  if (!best) return "";
+  return `${best[0]} and ${best[1]} both rank among the ten lowest averages, yet move together at ${best[2].toFixed(2)}.`;
+}
+
+function fillText() {
+  const k = DATA.basket_size, draws = DATA.random_avg_pair.length;
+  const lowerShare = DATA.random_corr_share_lower;
+  const beaten = Math.round((1 - lowerShare) * draws);
+  const overlap = DATA.basket_sel.filter((s) => DATA.basket.includes(s)).length;
+  const [selB, chkB] = DATA.oos.basket, [selA, chkA] = DATA.oos.all;
+  const values = {
+    basket_size: k, stocks: DATA.stocks, others: DATA.stocks - 1, days: int(DATA.days), pairs: int(DATA.pairs),
+    period: `${day(DATA.start)} to ${day(DATA.end)}`, jiofin_days: int(DATA.jiofin_days || 0),
+    basket_pairs: DATA.basket_pairs.toFixed(3), all_pairs3: DATA.all_pairs.toFixed(3), all_pairs2: DATA.all_pairs.toFixed(2),
+    random_beaten: `${int(beaten)} of ${int(draws)}`,
+    random_beaten_sub: beaten === draws ? "none was less correlated" : `${int(draws - beaten)} were less correlated`,
+    oos_check_basket: chkB.toFixed(3), oos_check_all: chkA.toFixed(3),
+    sel_years: `${day(DATA.selection_years[0])} to ${day(DATA.selection_years[1])}`,
+    chk_years: `${day(DATA.check_years[0])} to ${day(DATA.check_years[1])}`,
+    gold_avg: DATA.gold_avg.toFixed(3), gold_min: DATA.gold_min.toFixed(2), gold_max: DATA.gold_max.toFixed(2),
+    corporate: DATA.corporate_actions.map(([s, d, why]) => `${s} on ${day(d)} (${why})`).join("; "),
+    top_pairs: list(topPairs(3).map(([a, b, v]) => `${a} and ${b} (${v.toFixed(2)})`)),
+    lowest5: list(DATA.lowest5.map(([s, v]) => `${s} ${v.toFixed(2)}`)),
+    highest5: list(DATA.highest5.map(([s]) => s)),
+    first: DATA.path[0], trap: trapExample(),
+    path_2: DATA.path_values[0].toFixed(2), path_k: DATA.path_values[k - 2].toFixed(3),
+    path_last: DATA.path_values[DATA.path_values.length - 1].toFixed(2), path_n: DATA.path.length,
+    draws: int(draws),
+    random_text: beaten === draws
+      ? `Not one of them was as uncorrelated as the chosen basket (${DATA.basket_pairs.toFixed(3)}); the median random basket sat near the market average.`
+      : `${pct(lowerShare)} of them were less correlated than the chosen basket.`,
+    vol_basket: pct(DATA.vol_basket, 2), vol_random: pct(DATA.vol_random_median, 2),
+    vol_beaten: pct(1 - DATA.random_vol_share_lower, 0),
+    vol_single_basket: pct(DATA.vol_single_basket), vol_single_all: pct(DATA.vol_single_all),
+    oos_text: `${overlap} of the ${k} stocks it picked are the same as in the five-year basket. Its average pair correlation rose from ${selB.toFixed(3)} to ${chkB.toFixed(3)}, while all NIFTY 50 pairs went from ${selA.toFixed(3)} to ${chkA.toFixed(3)}: the advantage shrank from ${(selA - selB).toFixed(2)} to ${(chkA - chkB).toFixed(2)}, but held.`,
+  };
+  document.querySelectorAll("[data-fill]").forEach((el) => {
+    const v = values[el.dataset.fill];
+    if (v !== undefined) el.textContent = v;
+  });
+
+  const tbody = document.getElementById("basket-table");
+  tbody.innerHTML = "";
+  DATA.basket_rows.forEach((r) => {
+    const tr = document.createElement("tr");
+    const cells = [
+      [r.order, "n"], [`<span class="swatch" aria-hidden="true"></span>${r.symbol}`, ""], [r.sector, ""],
+      [Number(r.avg_corr_to_nifty50).toFixed(3), "n"], [Number(r.avg_corr_to_basket).toFixed(3), "n"],
+      [r.highest_pair_in_basket, ""],
+    ];
+    cells.forEach(([html, cls]) => { const td = document.createElement("td"); td.innerHTML = html; if (cls) td.className = cls; tr.appendChild(td); });
+    tbody.appendChild(tr);
+  });
+}
+
+// ---------- charts (Plotly), coloured from the page's theme tokens
+const FONT = '"Inter", system-ui, -apple-system, "Segoe UI", sans-serif';
+const CFG = { displayModeBar: false, responsive: true };
+const cssVar = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+function theme() {
+  return {
+    surface: cssVar("--surface"), ink: cssVar("--ink"), ink2: cssVar("--ink-2"), muted: cssVar("--muted"),
+    grid: cssVar("--grid"), axis: cssVar("--axis"), s1: cssVar("--series-1"), s2: cssVar("--series-2"),
+    de: cssVar("--deemph"),
+    div: [[0, cssVar("--div-neg2")], [0.25, cssVar("--div-neg1")], [0.5, cssVar("--div-mid")],
+          [0.75, cssVar("--div-pos1")], [1, cssVar("--div-pos2")]],
+  };
+}
+
+function base(t, height, margin, extra) {
+  return Object.assign({
+    height, paper_bgcolor: t.surface, plot_bgcolor: t.surface,
+    font: { family: FONT, size: 12, color: t.ink2 },
+    margin: Object.assign({ l: 64, r: 24, t: 16, b: 52 }, margin || {}),
+    hoverlabel: { bgcolor: t.surface, bordercolor: t.axis, font: { family: FONT, color: t.ink } },
+    showlegend: false,
+  }, extra || {});
+}
+function axis(t, extra) {
+  return Object.assign({ gridcolor: t.grid, linecolor: t.axis, zeroline: false, tickfont: { color: t.muted },
+                         title: { font: { color: t.muted } } }, extra || {});
+}
+function colorbar(t) {
+  return { title: { text: "correlation", font: { color: t.ink2 } }, tickfont: { color: t.muted },
+           outlinewidth: 0, thickness: 10, len: 0.7 };
+}
+
+function chartHeatmap(t) {
+  const o = DATA.order, inBasket = new Set(DATA.basket);
+  const labels = o.map((s) => (inBasket.has(s) ? `<b>${s}</b>` : s));
+  const text = o.map((a) => o.map((b) => `${a} (${DATA.sectors[a]})<br>${b} (${DATA.sectors[b]})<br>correlation ${corr(a, b).toFixed(2)}`));
+  const shapes = [];
+  for (let i = 1; i < o.length; i++) {
+    if (DATA.sectors[o[i]] !== DATA.sectors[o[i - 1]]) {
+      shapes.push({ type: "line", xref: "x", yref: "paper", x0: i - 0.5, x1: i - 0.5, y0: 0, y1: 1, line: { color: t.ink2, width: 0.8 } });
+      shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: i - 0.5, y1: i - 0.5, line: { color: t.ink2, width: 0.8 } });
+    }
+  }
+  Plotly.react("chart-heatmap", [{
+    type: "heatmap", z: DATA.corr, x: labels, y: labels, zmin: -1, zmax: 1, zmid: 0, colorscale: t.div,
+    text, hovertemplate: "%{text}<extra></extra>", xgap: 1, ygap: 1, colorbar: colorbar(t),
+  }], base(t, 820, { l: 100, b: 100, t: 8, r: 8 }, {
+    xaxis: axis(t, { tickangle: -60, tickfont: { size: 10, color: t.ink2 }, showgrid: false }),
+    yaxis: axis(t, { autorange: "reversed", tickfont: { size: 10, color: t.ink2 }, showgrid: false }),
+    shapes,
+  }), CFG);
+}
+
+function chartRanked(t) {
+  const ranked = Object.entries(DATA.avg).sort((a, b) => b[1] - a[1]);  // first bar is drawn at the bottom
+  const inBasket = new Set(DATA.basket);
+  const trace = (flag, name, color) => {
+    const rows = ranked.filter(([s]) => inBasket.has(s) === flag);
+    return {
+      type: "bar", orientation: "h", name, x: rows.map((r) => r[1]), y: rows.map((r) => r[0]),
+      marker: { color }, customdata: rows.map((r) => DATA.sectors[r[0]]),
+      text: flag ? rows.map((r) => r[1].toFixed(2)) : undefined, textposition: "outside", cliponaxis: false,
+      textfont: { color: t.ink2, family: FONT },
+      hovertemplate: "%{y} (%{customdata})<br>average correlation %{x:.3f}<extra></extra>",
+    };
+  };
+  Plotly.react("chart-ranked", [trace(true, "In the basket", t.s1), trace(false, "Other NIFTY 50 stocks", t.de)],
+    base(t, 140 + 18 * ranked.length, { l: 104, t: 40, r: 40 }, {
+      showlegend: true, legend: { orientation: "h", x: 0, y: 1, yanchor: "bottom", font: { color: t.ink2 } },
+      barmode: "overlay", bargap: 0.28, barcornerradius: 4,
+      yaxis: axis(t, { categoryorder: "array", categoryarray: ranked.map((r) => r[0]), showgrid: false,
+                       tickfont: { size: 11, color: t.ink2 } }),
+      xaxis: axis(t, { rangemode: "tozero", title: { text: "average correlation with the other stocks", font: { color: t.muted } } }),
+    }), CFG);
+}
+
+function chartPath(t) {
+  const sizes = DATA.path_values.map((_, i) => i + 2), k = DATA.basket_size;
+  Plotly.react("chart-path", [{
+    type: "scatter", mode: "lines+markers", x: sizes, y: DATA.path_values,
+    line: { color: t.s1, width: 2 }, marker: { size: 8, color: t.s1, line: { color: t.surface, width: 2 } },
+    customdata: sizes.map((n) => DATA.path[n - 1]),
+    hovertemplate: "%{x} stocks, last added %{customdata}<br>average pair correlation %{y:.3f}<extra></extra>",
+  }], base(t, 400, { t: 24 }, {
+    xaxis: axis(t, { dtick: 1, title: { text: "stocks in the basket", font: { color: t.muted } } }),
+    yaxis: axis(t, { rangemode: "tozero", title: { text: "average pair correlation", font: { color: t.muted } } }),
+    shapes: [{ type: "line", xref: "paper", x0: 0, x1: 1, y0: DATA.all_pairs, y1: DATA.all_pairs, line: { color: t.muted, width: 1 } }],
+    annotations: [
+      { xref: "paper", x: 1, y: DATA.all_pairs, xanchor: "right", yshift: 10, showarrow: false,
+        text: `all NIFTY 50 pairs ${DATA.all_pairs.toFixed(2)}`, font: { color: t.ink2 } },
+      { x: k, y: DATA.path_values[k - 2], showarrow: true, arrowcolor: t.muted, ax: 0, ay: -44,
+        text: `chosen: ${k} stocks, ${DATA.path_values[k - 2].toFixed(3)}`, font: { color: t.ink } },
+    ],
+  }), CFG);
+}
+
+function chartRandom(t) {
+  const draws = DATA.random_avg_pair.length;
+  Plotly.react("chart-random", [{
+    type: "histogram", x: DATA.random_avg_pair, nbinsx: 40, marker: { color: t.de, line: { color: t.surface, width: 1 } },
+    hovertemplate: "average pair correlation %{x}<br>%{y} random baskets<extra></extra>",
+  }], base(t, 400, { t: 24 }, {
+    bargap: 0.04,
+    xaxis: axis(t, { title: { text: `average pair correlation of ${int(draws)} random baskets`, font: { color: t.muted } } }),
+    yaxis: axis(t, { title: { text: "random baskets", font: { color: t.muted } } }),
+    shapes: [
+      { type: "line", yref: "paper", x0: DATA.basket_pairs, x1: DATA.basket_pairs, y0: 0, y1: 1, line: { color: t.s1, width: 2 } },
+      { type: "line", yref: "paper", x0: DATA.all_pairs, x1: DATA.all_pairs, y0: 0, y1: 1, line: { color: t.muted, width: 1 } },
+    ],
+    annotations: [
+      { x: DATA.basket_pairs, y: 1, yref: "paper", xanchor: "left", xshift: 6, showarrow: false,
+        text: `chosen basket ${DATA.basket_pairs.toFixed(3)}`, font: { color: t.ink } },
+      { x: DATA.all_pairs, y: 0.9, yref: "paper", xanchor: "left", xshift: 6, showarrow: false,
+        text: `all pairs ${DATA.all_pairs.toFixed(2)}`, font: { color: t.ink2 } },
+    ],
+  }), CFG);
+}
+
+function chartBasket(t) {
+  const b = DATA.basket;
+  const z = b.map((r) => b.map((c) => corr(r, c)));
+  const text = b.map((r) => b.map((c) => (r === c ? "" : corr(r, c).toFixed(2))));
+  Plotly.react("chart-basket", [{
+    type: "heatmap", z, x: b, y: b, zmin: -1, zmax: 1, zmid: 0, colorscale: t.div, text, texttemplate: "%{text}",
+    textfont: { color: t.ink, size: 12, family: FONT }, xgap: 2, ygap: 2, colorbar: colorbar(t),
+    customdata: b.map((r) => b.map((c) => `${r} (${DATA.sectors[r]}) and ${c} (${DATA.sectors[c]})`)),
+    hovertemplate: "%{customdata}<br>correlation %{z:.3f}<extra></extra>",
+  }], base(t, 520, { l: 96, b: 96, t: 8, r: 8 }, {
+    xaxis: axis(t, { tickangle: -45, showgrid: false, tickfont: { color: t.ink2 } }),
+    yaxis: axis(t, { autorange: "reversed", showgrid: false, tickfont: { color: t.ink2 } }),
+  }), CFG);
+}
+
+function chartOos(t) {
+  const labels = [`Selection years<br>${day(DATA.selection_years[0])} to ${day(DATA.selection_years[1])}`,
+                  `Check years<br>${day(DATA.check_years[0])} to ${day(DATA.check_years[1])}`];
+  const trace = (name, y, color) => ({
+    type: "bar", name, x: labels, y, marker: { color }, text: y.map((v) => v.toFixed(3)), textposition: "outside",
+    cliponaxis: false, textfont: { color: t.ink2, family: FONT }, hovertemplate: `${name}<br>%{y:.3f}<extra></extra>`,
+  });
+  Plotly.react("chart-oos", [
+    trace("Basket picked on the selection years", DATA.oos.basket, t.s1),
+    trace("All NIFTY 50 pairs", DATA.oos.all, t.s2),
+  ], base(t, 400, { t: 48 }, {
+    showlegend: true, legend: { orientation: "h", x: 0, y: 1.02, yanchor: "bottom", font: { color: t.ink2 } },
+    barmode: "group", bargap: 0.5, bargroupgap: 0.1, barcornerradius: 4,
+    xaxis: axis(t, { showgrid: false, tickfont: { color: t.ink2 } }),
+    yaxis: axis(t, { rangemode: "tozero", title: { text: "average pair correlation", font: { color: t.muted } } }),
+  }), CFG);
+}
+
+function renderCharts() {
+  if (!window.Plotly) {
+    document.querySelectorAll(".chart").forEach((el) => {
+      el.textContent = "The charts need the Plotly library, which did not load. The tables and text above hold the same figures.";
+    });
+    return;
+  }
+  const t = theme();
+  [chartBasket, chartHeatmap, chartRanked, chartPath, chartRandom, chartOos].forEach((draw) => {
+    try { draw(t); } catch (e) { console.error(e); }
+  });
+}
+
+fillText();
+renderCharts();
+// Redraw in the other palette when the viewer's theme changes.
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", renderCharts);
+new MutationObserver(renderCharts).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+</script>

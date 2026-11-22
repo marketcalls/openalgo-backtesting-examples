@@ -1,0 +1,3 @@
+time,symbol,order_id,instrument,side,order_type,limit_rupees,trigger_rupees,validity,product,status,decided_at,good_until,quantity_units,filled_units,average_fill_rupees,reject_code,reduce_only,tag,sizer
+2021-11-22 15:30:00,NIFTYBEES,1,0,BUY,MARKET,,,DAY,CNC,Filled,2021-11-22 15:30:00,2021-11-23 15:30:00,3023.0,3023.0,193.45,,False,rebalance,
+2021-11-22 15:30:00,GOLDBEES,2,1,BUY,MARKET,,,DAY,CNC,Filled,2021-11-22 15:30:00,2021-11-23 15:30:00,8998.0,8998.0,42.15,,False,rebalance,
