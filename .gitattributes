@@ -1,0 +1,3 @@
+# Keep vendored libraries byte for byte: strategy 05's charts.py checks their SHA-256,
+# and line-ending conversion on checkout would change it.
+strategies/*/vendor/** -text
