@@ -1,0 +1,217 @@
+Note: Historify has no GOLDBEES candle on 2019-05-07
+Net profit   : Rs 13,94,475.60
+Return       : 139.45%
+Max drawdown : -29.42%
+Trades       : 27 (30% won)
+Overfitting  : too few trades to judge (27 closed, 30 needed)
+Benchmark    : 148.08% return (NIFTY)
+
+== Stronger ETF + EMA filter, 12-month lookback (baseline)
+  Net profit (Rs)           : 1,394,475.60
+  Return                    : 139.45%
+  CAGR                      : 10.33%
+  Max drawdown              : -29.42%
+  Volatility (yearly)       : 16.82%
+  Sharpe ratio              : 0.67
+  Closed trades             : 27
+  Switches a year           : 3.04
+  Win rate                  : 29.63%
+  Days in NIFTYBEES         : 42.10%
+  Days in GOLDBEES          : 47.82%
+  Days in cash              : 10.08%
+  Charges (Rs)              : 66,153.25
+  Charges / gross, closed   : 4.53%
+  NIFTY over the test         : 148.08%   beta 0.28
+  Year by year                : 2018 -7.05%, 2019 -1.87%, 2020 25.79%, 2021 16.76%, 2022 -20.42%, 2023 18.85%, 2024 6.67%, 2025 67.01%, 2026 6.09%
+          symbol                entry_time                 exit_time  entry_price  exit_price     net_pnl  return_pct  days_held
+trade                                                                                                                           
+1      NIFTYBEES 2018-01-02 09:15:00+05:30 2018-03-26 09:15:00+05:30       108.05      103.65   -40868.63   -4.292307       83.0
+2      NIFTYBEES 2018-03-27 09:15:00+05:30 2018-10-05 09:15:00+05:30       105.05      104.95    -2920.54   -0.319483      192.0
+3      NIFTYBEES 2018-11-19 09:15:00+05:30 2018-11-22 09:15:00+05:30       111.55      110.90    -7330.30   -0.806593        3.0
+4      NIFTYBEES 2018-11-27 09:15:00+05:30 2018-12-07 09:15:00+05:30       111.05      111.15    -1209.36   -0.134464       10.0
+5      NIFTYBEES 2018-12-10 09:15:00+05:30 2018-12-11 09:15:00+05:30       111.85      108.95   -25326.86   -2.814617        1.0
+6      NIFTYBEES 2018-12-13 09:15:00+05:30 2019-01-02 09:15:00+05:30       112.60      113.60     5829.01    0.662665       20.0
+7       GOLDBEES 2019-01-03 09:15:00+05:30 2019-04-02 09:15:00+05:30        28.35       28.10    -9763.93   -1.105391       89.0
+8      NIFTYBEES 2019-04-03 09:15:00+05:30 2019-07-30 09:15:00+05:30       122.65      118.30   -32910.71   -3.767626      118.0
+9      NIFTYBEES 2019-09-23 09:15:00+05:30 2019-10-03 09:15:00+05:30       120.55      121.15     2313.19    0.272721       10.0
+10      GOLDBEES 2019-10-04 09:15:00+05:30 2021-01-29 09:15:00+05:30        33.45       43.75   258303.91   30.535371      483.0
+11      GOLDBEES 2021-02-01 09:15:00+05:30 2021-02-02 09:15:00+05:30        44.05       43.40   -19102.53   -1.698745        1.0
+12     NIFTYBEES 2021-04-05 09:15:00+05:30 2022-02-25 09:15:00+05:30       156.10      184.95   192051.79   18.237660      326.0
+13     NIFTYBEES 2022-02-28 09:15:00+05:30 2022-03-03 09:15:00+05:30       189.95      184.85   -38255.56   -2.906596        3.0
+14     NIFTYBEES 2022-03-15 09:15:00+05:30 2022-05-05 09:15:00+05:30       185.05      194.40    59465.25    4.822857       51.0
+15      GOLDBEES 2022-07-04 09:15:00+05:30 2022-07-18 09:15:00+05:30        45.10       43.60   -45913.75   -3.546942       14.0
+16      GOLDBEES 2022-07-19 09:15:00+05:30 2022-07-22 09:15:00+05:30        43.80       43.55    -9830.41   -0.794895        3.0
+17      GOLDBEES 2022-07-25 09:15:00+05:30 2022-09-02 09:15:00+05:30        44.35       43.45   -27894.07   -2.251891       39.0
+18      GOLDBEES 2022-09-06 09:15:00+05:30 2022-09-08 09:15:00+05:30        43.90       43.65    -9552.40   -0.793619        2.0
+19      GOLDBEES 2022-09-09 09:15:00+05:30 2022-09-15 09:15:00+05:30        43.85       43.20   -20320.22   -1.705443        6.0
+20      GOLDBEES 2022-10-06 09:15:00+05:30 2022-10-17 09:15:00+05:30        44.65       43.30   -38332.41   -3.245043       11.0
+21      GOLDBEES 2022-10-25 09:15:00+05:30 2022-10-27 09:15:00+05:30        43.75       37.55  -163373.98  -14.381354        2.0
+22      GOLDBEES 2022-10-28 09:15:00+05:30 2022-10-31 09:15:00+05:30        43.80       43.30   -13398.09   -1.365226        3.0
+23      GOLDBEES 2022-11-03 09:15:00+05:30 2022-11-04 09:15:00+05:30        43.55       43.40    -5474.77   -0.569014        1.0
+24      GOLDBEES 2022-11-09 09:15:00+05:30 2023-07-04 09:15:00+05:30        44.00       51.00   150649.02   15.667603      237.0
+25     NIFTYBEES 2023-07-05 09:15:00+05:30 2024-11-22 09:15:00+05:30       218.05      262.90   228574.45   20.323114      506.0
+26     NIFTYBEES 2024-11-25 09:15:00+05:30 2025-01-02 09:15:00+05:30       271.05      266.90   -23431.22   -1.753115       38.0
+27      GOLDBEES 2025-01-03 09:15:00+05:30 2026-10-22 09:15:00+05:30        65.35      117.10  1032498.72   78.883226      657.0
+  FD interest the cash days would have earned (estimate): Rs 65,593
+
+== Stronger ETF + EMA filter, 3-month lookback
+  Net profit (Rs)           : 2,678,505.87
+  Return                    : 267.85%
+  CAGR                      : 15.79%
+  Max drawdown              : -24.02%
+  Volatility (yearly)       : 15.44%
+  Sharpe ratio              : 1.03
+  Closed trades             : 34
+  Switches a year           : 3.83
+  Win rate                  : 41.18%
+  Days in NIFTYBEES         : 45.96%
+  Days in GOLDBEES          : 46.64%
+  Days in cash              : 7.40%
+  Charges (Rs)              : 136,862.78
+  Charges / gross, closed   : 4.86%
+  NIFTY over the test         : 148.08%   beta 0.28
+  Year by year                : 2018 -13.47%, 2019 14.94%, 2020 35.79%, 2021 25.10%, 2022 8.06%, 2023 17.42%, 2024 0.66%, 2025 67.01%, 2026 2.08%
+          symbol                entry_time                 exit_time  entry_price  exit_price     net_pnl  return_pct  days_held
+trade                                                                                                                           
+1      NIFTYBEES 2018-01-02 09:15:00+05:30 2018-03-26 09:15:00+05:30       108.05      103.65   -40868.63   -4.292307       83.0
+2      NIFTYBEES 2018-03-27 09:15:00+05:30 2018-04-03 09:15:00+05:30       105.05      105.65     3164.62    0.346184        7.0
+3       GOLDBEES 2018-04-04 09:15:00+05:30 2018-07-03 09:15:00+05:30        27.50       27.05   -16994.69   -1.859060       90.0
+4      NIFTYBEES 2018-07-04 09:15:00+05:30 2018-10-05 09:15:00+05:30       111.55      104.95   -55165.75   -6.134950       93.0
+5      NIFTYBEES 2018-11-19 09:15:00+05:30 2018-11-22 09:15:00+05:30       111.55      110.90    -6824.49   -0.806682        3.0
+6      NIFTYBEES 2018-11-27 09:15:00+05:30 2018-12-07 09:15:00+05:30       111.05      111.15    -1127.52   -0.134677       10.0
+7      NIFTYBEES 2018-12-10 09:15:00+05:30 2018-12-11 09:15:00+05:30       111.85      108.95   -23577.68   -2.814759        1.0
+8      NIFTYBEES 2018-12-13 09:15:00+05:30 2019-01-02 09:15:00+05:30       112.60      113.60     5425.75    0.662533       20.0
+9       GOLDBEES 2019-01-03 09:15:00+05:30 2019-04-02 09:15:00+05:30        28.35       28.10    -9089.95   -1.105479       89.0
+10     NIFTYBEES 2019-04-03 09:15:00+05:30 2019-07-02 09:15:00+05:30       122.65      125.55    17380.72    2.137404       90.0
+11      GOLDBEES 2019-07-03 09:15:00+05:30 2020-01-02 09:15:00+05:30        30.05       34.40   119767.17   14.236306      183.0
+12     NIFTYBEES 2020-01-03 09:15:00+05:30 2020-02-28 09:15:00+05:30       129.15      121.60   -56718.99   -6.064229       56.0
+13      GOLDBEES 2020-04-03 09:15:00+05:30 2020-07-02 09:15:00+05:30        38.40       42.70    97812.54   10.961835       90.0
+14     NIFTYBEES 2020-07-03 09:15:00+05:30 2022-01-04 09:15:00+05:30       112.70      198.85   751240.97   76.137603      550.0
+15      GOLDBEES 2022-01-05 09:15:00+05:30 2022-01-07 09:15:00+05:30        42.05       41.50   -26319.69   -1.530839        2.0
+16      GOLDBEES 2022-01-14 09:15:00+05:30 2022-02-01 09:15:00+05:30        41.40       41.60     4313.65    0.258400       18.0
+17      GOLDBEES 2022-02-02 09:15:00+05:30 2022-07-18 09:15:00+05:30        42.00       43.60    60609.47    3.581295      166.0
+18      GOLDBEES 2022-07-19 09:15:00+05:30 2022-07-22 09:15:00+05:30        43.80       43.55   -13837.60   -0.794445        3.0
+19      GOLDBEES 2022-07-25 09:15:00+05:30 2022-09-02 09:15:00+05:30        44.35       43.45   -39281.12   -2.251474       39.0
+20      GOLDBEES 2022-09-06 09:15:00+05:30 2022-09-08 09:15:00+05:30        43.90       43.65   -13446.23   -0.793154        2.0
+21      GOLDBEES 2022-09-09 09:15:00+05:30 2022-09-15 09:15:00+05:30        43.85       43.20   -28614.04   -1.705060        6.0
+22     NIFTYBEES 2022-10-04 09:15:00+05:30 2023-01-03 09:15:00+05:30       186.85      199.90   112394.73    6.752625       91.0
+23      GOLDBEES 2023-01-04 09:15:00+05:30 2023-07-04 09:15:00+05:30        47.70       51.00   117072.32    6.686863      181.0
+24     NIFTYBEES 2023-07-05 09:15:00+05:30 2024-04-02 09:15:00+05:30       218.05      248.90   264686.71   13.909486      272.0
+25      GOLDBEES 2024-04-03 09:15:00+05:30 2024-07-02 09:15:00+05:30        59.25       60.70    47366.53    2.220838       90.0
+26     NIFTYBEES 2024-07-03 09:15:00+05:30 2024-11-22 09:15:00+05:30       269.45      262.90   -57257.19   -2.651897      142.0
+27     NIFTYBEES 2024-11-25 09:15:00+05:30 2025-01-02 09:15:00+05:30       271.05      266.90   -37406.88   -1.752696       38.0
+28      GOLDBEES 2025-01-03 09:15:00+05:30 2026-07-02 09:15:00+05:30        65.35      118.25  1685322.03   80.641546      545.0
+29     NIFTYBEES 2026-07-07 09:15:00+05:30 2026-07-09 09:15:00+05:30       278.55      277.05   -28011.52   -0.760853        2.0
+30     NIFTYBEES 2026-07-20 09:15:00+05:30 2026-07-21 09:15:00+05:30       276.20      276.35    -6134.44   -0.168680        1.0
+31     NIFTYBEES 2026-07-31 09:15:00+05:30 2026-08-19 09:15:00+05:30       276.50      276.30   -10728.14   -0.295168       19.0
+32     NIFTYBEES 2026-08-21 09:15:00+05:30 2026-08-25 09:15:00+05:30       276.65      275.80   -19207.53   -0.529831        4.0
+33     NIFTYBEES 2026-08-26 09:15:00+05:30 2026-08-28 09:15:00+05:30       275.10      277.40    21932.86    0.612294        2.0
+34      GOLDBEES 2026-10-05 09:15:00+05:30 2026-10-22 09:15:00+05:30       121.50      117.10  -139372.12   -3.840551       17.0
+  FD interest the cash days would have earned (estimate): Rs 85,393
+
+== Compared (2018-01-01 to 2026-11-20; NIFTY 50 index: 148.08%)
+                                                     net_profit   cagr max_drawdown volatility sharpe closed_trades days_in_cash charges
+portfolio                                                                                                                               
+Stronger ETF + EMA filter, 12-month (baseline)        1,394,476 10.33%      -29.42%     16.82%   0.67            27        10.1%  66,153
+Stronger ETF + EMA filter, 3-month                    2,678,506 15.79%      -24.02%     15.44%   1.03            34         7.4% 136,863
+Stronger ETF, 12-month, no EMA filter                 1,828,813 12.42%      -29.72%     16.68%   0.78             7         0.4%  20,471
+Stronger ETF, 3-month, no EMA filter                  1,700,989 11.83%      -36.89%     16.85%   0.75            17         0.8%  57,930
+EMA for entries only, 12-month                        1,828,813 12.42%      -29.72%     16.68%   0.78             7         0.4%  20,471
+EMA for entries only, 3-month                         1,719,486 11.92%      -36.46%     16.84%   0.75            17         0.9%  57,851
+Stronger ETF + EMA filter, 6-month                    1,589,840 11.30%      -32.70%     16.83%   0.72            31         7.4%  89,098
+Stronger ETF + EMA filter, 9-month                    2,124,386 13.68%      -29.59%     17.39%   0.82            27         6.9%  87,576
+Stronger ETF + EMA filter, 12-month, checked monthly  1,076,001  8.57%      -27.25%     17.21%   0.56            34         7.6%  82,822
+Stronger ETF + EMA filter, 3-month, checked monthly   2,197,911 13.98%      -26.07%     15.79%   0.91            39         7.2% 156,147
+Crash filter (6% FD), no EMA, 12-month                1,828,813 12.42%      -29.72%     16.68%   0.78             7         0.4%  20,471
+Crash filter (6% FD), no EMA, 3-month                 1,196,280  9.26%      -36.83%     16.58%   0.62            18         9.2%  59,098
+Crash filter at 0%, no EMA, 3-month                   1,821,574 12.38%      -36.89%     16.78%   0.78            17         3.6%  59,608
+Crash filter only, 12-month                             676,201  5.99%      -20.17%      9.92%   0.64             9         0.0%  13,602
+Crash filter only, 3-month                              762,789  6.59%      -23.64%      9.68%   0.71            19         8.5%  29,752
+NIFTYBEES held                                        1,639,398 11.54%      -34.92%     14.46%   0.83             0         0.0%   1,132
+GOLDBEES held                                         2,716,271 15.92%      -29.99%     16.23%   0.99             0         0.0%   1,134
+60:40 held (strategy 03 mix)                          2,070,079 13.46%      -21.68%     11.40%   1.16             0         0.0%   1,133
+50:50 reset every quarter                             2,303,562 14.40%      -19.53%     10.87%   1.29             0         0.0%   5,228
+NIFTY 50 index (benchmark)                                  NaN 10.73%      -38.44%     16.66%    NaN           NaN          NaN     NaN
+
+== Rolling returns: every 3- and 12-month stretch of the test
+   window                 portfolio average median  worst   best share_positive share_above_fd
+ 3 months With EMA filter, 12-month    3.0%   2.0% -22.2%  45.4%          61.0%          52.7%
+ 3 months  With EMA filter, 3-month    4.1%   3.1% -16.7%  45.4%          67.1%          58.6%
+ 3 months   No EMA filter, 12-month    3.8%   3.2% -20.3%  45.4%          64.6%          58.1%
+ 3 months    No EMA filter, 3-month    3.8%   3.4% -32.1%  45.4%          67.7%          59.7%
+ 3 months            NIFTYBEES held    3.1%   3.4% -34.3%  30.9%          66.9%          60.7%
+ 3 months             GOLDBEES held    4.5%   3.3% -20.5%  46.0%          70.9%          61.9%
+ 3 months                60:40 held    3.6%   3.7% -18.6%  25.1%          77.9%          69.0%
+12 months With EMA filter, 12-month   14.2%  14.7% -27.6% 111.7%          70.4%          66.0%
+12 months  With EMA filter, 3-month   21.1%  16.7% -17.4% 111.7%          89.6%          80.5%
+12 months   No EMA filter, 12-month   17.6%  14.4% -16.8% 111.7%          84.6%          69.5%
+12 months    No EMA filter, 3-month   18.9%  15.0% -23.6% 111.7%          84.4%          74.9%
+12 months            NIFTYBEES held   12.9%   9.8% -29.1%  84.2%          82.8%          64.5%
+12 months             GOLDBEES held   21.7%  18.0% -17.5% 113.8%          90.4%          79.8%
+12 months                60:40 held   16.0%  16.1%  -9.0%  53.4%          98.8%          87.9%
+
+== Reality checks (net profit, and the share of the backtest's kept)
+  12-month, filled at the next close  : Rs 1,739,371 (125% kept)
+  12-month, every order one day late  : Rs 1,941,141 (139% kept)
+  3-month, filled at the next close  : Rs 2,487,085 (93% kept)
+  3-month, every order one day late  : Rs 2,855,866 (107% kept)
+
+== Warnings (baseline)
+  - NIFTYBEES: generic cash-equity instrument assumed (lot 1, tick 0.05)
+  - GOLDBEES: generic cash-equity instrument assumed (lot 1, tick 0.05)
+  - charges: the NSE_EQ_DELIVERY rates of cost schedule IN-2020-07-01 used for 2018-01-01 belong to the first schedule version, which starts later (backfill), so the charges may be off. From 2020-08-01 to 2021-03-31 NSE charged EQ-series shares outside the NIFTY 50 and NIFTY Next 50 Rs 2.75 per lakh (NSE/FA/46225) and the shares of those two indices this standard rate. The engine does not know an index's members, so trades from 2020-08-01 are flagged unverified.
+  - charges: the NSE_EQ_DELIVERY rates of cost schedule IN-2026-04-01 used for 2026-11-20 are verified only up to an earlier date, so the charges may be off. Verified on 2026-11-12; later trade dates are charged at these rates and flagged unverified. The start date is the day the Finance Act 2026 F&O STT rates took effect; no other change between that day and the snapshot is known. NSE rows keep the calculator's split between transaction charge and IPFT (NSE circular NSE/FA/73061 moved all but Rs 0.01 per crore of IPFT into the transaction charge in March 2026); the sum is what is charged. Unverified rows say why in their own notes: BSE groups X and SS, BSE options other than Sensex and Bankex. MCX CASTORSEED, RBDPMOLEIN, PEPPER and KAPAS pay the uniform Rs 2.10 per lakh of MCX/F&A/631/2024, not the contract-specific rates of the snapshot, which predate 2024-10-01.
+  - sale_credit row SALE_CREDIT/1, used from 2018-03-26, is unverified: Observed for October 2020 and applied to every earlier date, before the peak margin rules (source: Trading Q&A by Zerodha, RE: Changes in margin requirements from 1st Sep 2020, reply of 2020-10-01: the entire proceeds from a sale of holdings can buy other stocks)
+  - charges: the NSE_EQ_DELIVERY rates of cost schedule IN-2020-07-01 are backfilled for 19 fills, from 2018-01-02
+  - charges: the NSE_EQ_DELIVERY rates of cost schedule IN-2021-01-01 are unverified for 3 fills, from 2021-01-29
+  Rejected orders, 12-month: 0 
+  Rejected orders, 3-month: 0 
+
+== Cross-check against the returns worked out again from Historify's closes
+  12-month: 27 of 27 trades match on entry day, 27 also on exit day; only in the replay 0, only in the engine 0
+  3-month: 34 of 34 trades match on entry day, 34 also on exit day; only in the replay 0, only in the engine 0
+
+== Fills at a stray opening price (more than 0.5% outside the closes around them)
+  12-month: 22 fills, net cost Rs 146,627 (+ = paid more than the closes around it)
+      date    symbol side  fill_price  close_before  close_that_day  cost_rupees
+2018-10-05 NIFTYBEES SELL      104.95        110.80          108.00     26541.10
+2018-12-11 NIFTYBEES SELL      108.95        109.90          110.60      7642.75
+2019-10-03 NIFTYBEES SELL      121.15        120.50          119.85     -4573.40
+2021-01-29  GOLDBEES SELL       43.75         42.54           42.65    -27817.90
+2021-02-01  GOLDBEES  BUY       44.05         42.65           42.34     35739.20
+2021-02-02  GOLDBEES SELL       43.40         42.34           41.92    -27059.68
+2021-04-05 NIFTYBEES  BUY      156.10        158.70          156.96     -5801.56
+2022-02-25 NIFTYBEES SELL      184.95        178.36          180.85    -27658.60
+2022-02-28 NIFTYBEES  BUY      189.95        180.85          181.84     56194.19
+2022-03-03 NIFTYBEES SELL      184.85        180.10          178.86    -32912.75
+2022-03-15 NIFTYBEES  BUY      185.05        182.61          180.60     16257.72
+2022-05-05 NIFTYBEES SELL      194.40        181.05          181.01    -88951.05
+2022-07-04  GOLDBEES  BUY       45.10         44.36           44.68     12054.84
+2022-07-19  GOLDBEES  BUY       43.80         43.55           43.39      7058.75
+2022-07-25  GOLDBEES  BUY       44.35         43.69           43.60     18433.80
+2022-09-06  GOLDBEES  BUY       43.90         43.54           43.50      9870.48
+2022-10-06  GOLDBEES  BUY       44.65         44.05           44.28      9788.72
+2022-10-25  GOLDBEES  BUY       43.75         43.48           43.17      7010.82
+2022-10-27  GOLDBEES SELL       37.55         43.17           43.46    145928.92
+2022-10-28  GOLDBEES  BUY       43.80         43.46           43.28      7618.04
+2023-07-04  GOLDBEES SELL       51.00         49.56           49.88    -24475.36
+2023-07-05 NIFTYBEES  BUY      218.05        213.06          212.92     25738.42
+  3-month: 15 fills, net cost Rs -29,456 (+ = paid more than the closes around it)
+      date    symbol side  fill_price  close_before  close_that_day  cost_rupees
+2018-10-05 NIFTYBEES SELL      104.95        110.80          108.00     24586.05
+2018-12-11 NIFTYBEES SELL      108.95        109.90          110.60      7114.55
+2022-01-04 NIFTYBEES SELL      198.85        190.72          192.46    -55944.45
+2022-01-05  GOLDBEES  BUY       42.05         41.46           41.56     20034.63
+2022-01-07  GOLDBEES SELL       41.50         41.24           41.09    -10630.62
+2022-02-02  GOLDBEES  BUY       42.00         41.55           41.51     18132.75
+2022-07-19  GOLDBEES  BUY       43.80         43.55           43.39      9941.75
+2022-07-25  GOLDBEES  BUY       44.35         43.69           43.60     25963.74
+2022-09-06  GOLDBEES  BUY       43.90         43.54           43.50     13902.12
+2023-07-04  GOLDBEES SELL       51.00         49.56           49.88    -41108.48
+2023-07-05 NIFTYBEES  BUY      218.05        213.06          212.92     43547.73
+2024-04-03  GOLDBEES  BUY       59.25         58.64           58.77     17278.56
+2026-07-09 NIFTYBEES SELL      277.05        271.69          272.76    -56700.93
+2026-08-26 NIFTYBEES  BUY      275.10        276.94          277.02    -23958.64
+2026-08-28 NIFTYBEES SELL      277.40        275.74          275.62    -21614.86
+
+Saved in D:\Quantflow 5\Day06\backtesting examples\strategies\06_niftybees_goldbees_dual_momentum_d_long\reports: strategy_report.html, tearsheet.html, tearsheet_3m.html, trades.csv, trades_3m.csv, open_positions.csv, signals.csv, compared.csv, rolling_returns.csv, trade_check.csv, stray_opens.csv, tables/

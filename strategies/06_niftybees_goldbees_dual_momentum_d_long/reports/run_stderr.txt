@@ -1,0 +1,62 @@
+D:\Quantflow 5\Day06\backtesting examples\strategies\06_niftybees_goldbees_dual_momentum_d_long\strategy.py:620: UnverifiedScheduleWarning: the NSE_EQ_DELIVERY rates of cost schedule IN-2020-07-01 belong to the first schedule version, which starts later (backfill), so the charges may be off (details in result.warnings)
+  base = bt.backtest(Momentum, client, **RUN)
+D:\Quantflow 5\Day06\backtesting examples\strategies\06_niftybees_goldbees_dual_momentum_d_long\strategy.py:620: UnverifiedScheduleWarning: the NSE_EQ_DELIVERY rates of cost schedule IN-2026-04-01 are verified only up to an earlier date, so the charges may be off (details in result.warnings)
+  base = bt.backtest(Momentum, client, **RUN)
+D:\Quantflow 5\Day06\openalgo\.venv\Lib\site-packages\openalgo\backtest\metrics.py:156: CalendarWarning: sessions per year counts every weekday of NSE 2018 as a session (no holiday list is loaded), so volatility, Sharpe, Sortino and alpha are annualised with an overstated count
+  return _analysis.analyse(
+D:\Quantflow 5\Day06\openalgo\.venv\Lib\site-packages\openalgo\backtest\metrics.py:156: CalendarWarning: sessions per year counts every weekday of NSE 2018 as a session (no holiday list is loaded), so volatility, Sharpe, Sortino and alpha are annualised with an overstated count
+  return _analysis.analyse(
+D:\Quantflow 5\Day06\backtesting examples\strategies\06_niftybees_goldbees_dual_momentum_d_long\strategy.py:653: OrdersNotPlacedWarning: 3 of 57 orders were rejected because the margin the order needed was more than the free cash (reject_code 'margin'). See result.warnings.
+  variant_runs = {name: bt.backtest(Momentum, client, **RUN, params=p) for name, p in variants.items()}
+D:\Quantflow 5\Day06\backtesting examples\strategies\06_niftybees_goldbees_dual_momentum_d_long\strategy.py:653: OrdersNotPlacedWarning: 4 of 72 orders were rejected because the margin the order needed was more than the free cash (reject_code 'margin'). See result.warnings.
+  variant_runs = {name: bt.backtest(Momentum, client, **RUN, params=p) for name, p in variants.items()}
+D:\Quantflow 5\Day06\openalgo\.venv\Lib\site-packages\openalgo\backtest\metrics.py:156: CalendarWarning: sessions per year counts every weekday of NSE 2018 as a session (no holiday list is loaded), so volatility, Sharpe, Sortino and alpha are annualised with an overstated count
+  return _analysis.analyse(
+D:\Quantflow 5\Day06\openalgo\.venv\Lib\site-packages\openalgo\backtest\metrics.py:156: CalendarWarning: sessions per year counts every weekday of NSE 2018 as a session (no holiday list is loaded), so volatility, Sharpe, Sortino and alpha are annualised with an overstated count
+  return _analysis.analyse(
+D:\Quantflow 5\Day06\openalgo\.venv\Lib\site-packages\openalgo\backtest\metrics.py:156: CalendarWarning: sessions per year counts every weekday of NSE 2018 as a session (no holiday list is loaded), so volatility, Sharpe, Sortino and alpha are annualised with an overstated count
+  return _analysis.analyse(
+D:\Quantflow 5\Day06\openalgo\.venv\Lib\site-packages\openalgo\backtest\metrics.py:156: CalendarWarning: sessions per year counts every weekday of NSE 2018 as a session (no holiday list is loaded), so volatility, Sharpe, Sortino and alpha are annualised with an overstated count
+  return _analysis.analyse(
+D:\Quantflow 5\Day06\openalgo\.venv\Lib\site-packages\openalgo\backtest\metrics.py:156: CalendarWarning: sessions per year counts every weekday of NSE 2018 as a session (no holiday list is loaded), so volatility, Sharpe, Sortino and alpha are annualised with an overstated count
+  return _analysis.analyse(
+D:\Quantflow 5\Day06\openalgo\.venv\Lib\site-packages\openalgo\backtest\metrics.py:156: CalendarWarning: sessions per year counts every weekday of NSE 2018 as a session (no holiday list is loaded), so volatility, Sharpe, Sortino and alpha are annualised with an overstated count
+  return _analysis.analyse(
+D:\Quantflow 5\Day06\openalgo\.venv\Lib\site-packages\openalgo\backtest\metrics.py:156: CalendarWarning: sessions per year counts every weekday of NSE 2018 as a session (no holiday list is loaded), so volatility, Sharpe, Sortino and alpha are annualised with an overstated count
+  return _analysis.analyse(
+D:\Quantflow 5\Day06\openalgo\.venv\Lib\site-packages\openalgo\backtest\metrics.py:156: CalendarWarning: sessions per year counts every weekday of NSE 2018 as a session (no holiday list is loaded), so volatility, Sharpe, Sortino and alpha are annualised with an overstated count
+  return _analysis.analyse(
+D:\Quantflow 5\Day06\openalgo\.venv\Lib\site-packages\openalgo\backtest\metrics.py:156: CalendarWarning: sessions per year counts every weekday of NSE 2018 as a session (no holiday list is loaded), so volatility, Sharpe, Sortino and alpha are annualised with an overstated count
+  return _analysis.analyse(
+D:\Quantflow 5\Day06\openalgo\.venv\Lib\site-packages\openalgo\backtest\metrics.py:156: CalendarWarning: sessions per year counts every weekday of NSE 2018 as a session (no holiday list is loaded), so volatility, Sharpe, Sortino and alpha are annualised with an overstated count
+  return _analysis.analyse(
+D:\Quantflow 5\Day06\openalgo\.venv\Lib\site-packages\openalgo\backtest\metrics.py:156: CalendarWarning: sessions per year counts every weekday of NSE 2018 as a session (no holiday list is loaded), so volatility, Sharpe, Sortino and alpha are annualised with an overstated count
+  return _analysis.analyse(
+D:\Quantflow 5\Day06\openalgo\.venv\Lib\site-packages\openalgo\backtest\metrics.py:156: CalendarWarning: sessions per year counts every weekday of NSE 2018 as a session (no holiday list is loaded), so volatility, Sharpe, Sortino and alpha are annualised with an overstated count
+  return _analysis.analyse(
+D:\Quantflow 5\Day06\openalgo\.venv\Lib\site-packages\openalgo\backtest\metrics.py:156: CalendarWarning: sessions per year counts every weekday of NSE 2018 as a session (no holiday list is loaded), so volatility, Sharpe, Sortino and alpha are annualised with an overstated count
+  return _analysis.analyse(
+D:\Quantflow 5\Day06\openalgo\.venv\Lib\site-packages\openalgo\backtest\metrics.py:156: CalendarWarning: sessions per year counts every weekday of NSE 2018 as a session (no holiday list is loaded), so volatility, Sharpe, Sortino and alpha are annualised with an overstated count
+  return _analysis.analyse(
+D:\Quantflow 5\Day06\openalgo\.venv\Lib\site-packages\openalgo\backtest\metrics.py:156: CalendarWarning: sessions per year counts every weekday of NSE 2018 as a session (no holiday list is loaded), so volatility, Sharpe, Sortino and alpha are annualised with an overstated count
+  return _analysis.analyse(
+D:\Quantflow 5\Day06\openalgo\.venv\Lib\site-packages\openalgo\backtest\metrics.py:156: CalendarWarning: sessions per year counts every weekday of NSE 2018 as a session (no holiday list is loaded), so volatility, Sharpe, Sortino and alpha are annualised with an overstated count
+  return _analysis.analyse(
+D:\Quantflow 5\Day06\openalgo\.venv\Lib\site-packages\openalgo\backtest\metrics.py:156: CalendarWarning: sessions per year counts every weekday of NSE 2018 as a session (no holiday list is loaded), so volatility, Sharpe, Sortino and alpha are annualised with an overstated count
+  return _analysis.analyse(
+D:\Quantflow 5\Day06\openalgo\.venv\Lib\site-packages\openalgo\backtest\metrics.py:156: CalendarWarning: sessions per year counts every weekday of NSE 2018 as a session (no holiday list is loaded), so volatility, Sharpe, Sortino and alpha are annualised with an overstated count
+  return _analysis.analyse(
+D:\Quantflow 5\Day06\backtesting examples\strategies\06_niftybees_goldbees_dual_momentum_d_long\strategy.py:703: OrdersNotPlacedWarning: 1 of 49 orders was rejected because the margin the order needed was more than the free cash (reject_code 'margin'). See result.warnings.
+  check = bt.backtest(Momentum, client, **RUN, params=params, **kwargs)
+D:\Quantflow 5\Day06\openalgo\.venv\Lib\site-packages\openalgo\backtest\metrics.py:156: CalendarWarning: sessions per year counts every weekday of NSE 2018 as a session (no holiday list is loaded), so volatility, Sharpe, Sortino and alpha are annualised with an overstated count
+  return _analysis.analyse(
+D:\Quantflow 5\Day06\openalgo\.venv\Lib\site-packages\openalgo\backtest\metrics.py:156: CalendarWarning: sessions per year counts every weekday of NSE 2018 as a session (no holiday list is loaded), so volatility, Sharpe, Sortino and alpha are annualised with an overstated count
+  return _analysis.analyse(
+D:\Quantflow 5\Day06\backtesting examples\strategies\06_niftybees_goldbees_dual_momentum_d_long\strategy.py:703: OrdersNotPlacedWarning: 1 of 61 orders was rejected because the margin the order needed was more than the free cash (reject_code 'margin'). See result.warnings.
+  check = bt.backtest(Momentum, client, **RUN, params=params, **kwargs)
+D:\Quantflow 5\Day06\openalgo\.venv\Lib\site-packages\openalgo\backtest\metrics.py:156: CalendarWarning: sessions per year counts every weekday of NSE 2018 as a session (no holiday list is loaded), so volatility, Sharpe, Sortino and alpha are annualised with an overstated count
+  return _analysis.analyse(
+D:\Quantflow 5\Day06\openalgo\.venv\Lib\site-packages\openalgo\backtest\report\_dashboard\data.py:135: CalendarWarning: sessions per year counts every weekday of NSE 2018 as a session (no holiday list is loaded), so volatility, Sharpe, Sortino and alpha are annualised with an overstated count
+  return analyse(
+D:\Quantflow 5\Day06\openalgo\.venv\Lib\site-packages\openalgo\backtest\report\_dashboard\data.py:135: CalendarWarning: sessions per year counts every weekday of NSE 2018 as a session (no holiday list is loaded), so volatility, Sharpe, Sortino and alpha are annualised with an overstated count
+  return analyse(

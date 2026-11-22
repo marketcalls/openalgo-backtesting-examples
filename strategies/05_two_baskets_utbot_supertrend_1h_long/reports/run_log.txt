@@ -1,0 +1,155 @@
+D:\Quantflow 5\Day06\backtesting examples\strategies\05_two_baskets_utbot_supertrend_1h_long\strategy.py:545: UnverifiedScheduleWarning: the NSE_EQ_DELIVERY rates of cost schedule IN-2026-04-01 are verified only up to an earlier date, so the charges may be off (details in result.warnings)
+  result = bt.backtest(STRATEGIES, client, capital=SPLIT, **run)
+D:\Quantflow 5\Day06\backtesting examples\strategies\05_two_baskets_utbot_supertrend_1h_long\strategy.py:545: OrdersNotPlacedWarning: UTBotBasket: 32 of 3652 orders were rejected, 31 of them because the margin the order needed was more than the free cash (reject_code 'margin', the most common reason). See result.warnings.
+  result = bt.backtest(STRATEGIES, client, capital=SPLIT, **run)
+D:\Quantflow 5\Day06\backtesting examples\strategies\05_two_baskets_utbot_supertrend_1h_long\strategy.py:606: OrdersNotPlacedWarning: UTBotBasket: 32 of 3652 orders were rejected, 31 of them because the margin the order needed was more than the free cash (reject_code 'margin', the most common reason). See result.warnings.
+  check = bt.backtest(STRATEGIES, client, capital=SPLIT, **run, **kwargs)
+D:\Quantflow 5\Day06\backtesting examples\strategies\05_two_baskets_utbot_supertrend_1h_long\strategy.py:606: OrdersNotPlacedWarning: UTBotBasket: 28 orders were rejected because the margin the order needed was more than the free cash (reject_code 'margin'). See result.warnings.
+  check = bt.backtest(STRATEGIES, client, capital=SPLIT, **run, **kwargs)
+Net profit   : Rs -1,86,052.15
+Return       : -18.61%
+Max drawdown : -26.63%
+Trades       : 2236 (33% won), 5 still open
+Overfitting  : each strategy's own trades below; none of the account's trades together
+  UTBotBasket      : quick checks: 3 not judged, 1 informational
+  SupertrendBasket : quick checks: 3 failed (random_out_of_sample, resample, variance), 1 informational
+Benchmark    : 47.73% return (NIFTY)
+
+== The account: both strategies, Rs 10 lakh
+  Net profit (Rs)           : -186,052.15
+  Return                    : -18.61%
+  CAGR                      : -4.34%
+  Max drawdown              : -26.63%
+  Volatility (yearly)       : 7.82%
+  Sharpe ratio              : -0.53
+  Closed trades             : 2236
+  Win rate                  : 32.83%
+  Average win (Rs)          : 2,240.86
+  Average loss (Rs)         : -1,241.28
+  Profit factor             : 0.88
+  Gross profit, closed (Rs) : 210,879.50
+  Charges (Rs)              : 430,926.20
+  Charges / gross           : 204.14%
+  Slippage (Rs)             : 109,846.43
+
+== UT Bot (60%) on its own Rs 600,000 
+  Net profit (Rs)           : -262,749.81
+  Return                    : -43.79%
+  CAGR                      : -11.68%
+  Max drawdown              : -48.94%
+  Volatility (yearly)       : 9.93%
+  Sharpe ratio              : -1.20
+  Closed trades             : 1809
+  Win rate                  : 31.23%
+  Average win (Rs)          : 1,922.41
+  Average loss (Rs)         : -1,084.62
+  Profit factor             : 0.81
+  Gross profit, closed (Rs) : 64,379.65
+  Charges (Rs)              : 327,544.61
+  Charges / gross           : 508.68%
+  Slippage (Rs)             : 84,024.40
+  How the trades ended  : {'signal': 1809}
+  Average holding       : 8.9 hourly candles, 1.8 calendar days
+  NIFTY over the test   : 47.73%   beta 0.38
+  Best 3 trades         : Rs 38,018.02
+  Average MFE / MAE     : Rs 1,638 / Rs -990 per trade (average net Rs -145)
+  Year by year          : 2022 -21.30%, 2023 -8.36%, 2024 -2.78%, 2025 -9.11%, 2026 -11.79%
+
+== Supertrend (40%) on its own Rs 400,000 
+  Net profit (Rs)           : 76,697.66
+  Return                    : 19.17%
+  CAGR                      : 3.85%
+  Max drawdown              : -14.64%
+  Volatility (yearly)       : 9.00%
+  Sharpe ratio              : 0.46
+  Closed trades             : 427
+  Win rate                  : 39.58%
+  Average win (Rs)          : 3,305.51
+  Average loss (Rs)         : -1,996.67
+  Profit factor             : 1.08
+  Gross profit, closed (Rs) : 146,499.85
+  Charges (Rs)              : 103,381.59
+  Charges / gross           : 70.31%
+  Slippage (Rs)             : 25,822.03
+  How the trades ended  : {'signal': 427}
+  Average holding       : 39.2 hourly candles, 8.3 calendar days
+  NIFTY over the test   : 47.73%   beta 0.39
+  Best 3 trades         : Rs 48,289.51 (111% of the closed profit)
+  Average MFE / MAE     : Rs 3,481 / Rs -1,652 per trade (average net Rs 102)
+  Year by year          : 2022 1.20%, 2023 5.57%, 2024 7.20%, 2025 3.39%, 2026 0.64%
+
+== The account, year by year
+  2022: -12.30%
+  2023:  -1.93%
+  2024:   2.18%
+  2025:  -2.60%
+  2026:  -4.91%
+
+== Correlation of the two strategies' daily returns
+                  UTBotBasket  SupertrendBasket
+UTBotBasket              1.00              0.36
+SupertrendBasket         0.36              1.00
+
+== Each strategy's part in the account
+                  net_pnl_rupees   share_pct  drawdown_pnl_rupees  peak_margin_rupees  orders_refused
+strategy                                                                                             
+UTBotBasket           -262749.81  141.223743           -291215.01           524836.40               0
+SupertrendBasket        76697.66  -41.223743             23579.45           270928.15               0
+
+== By stock
+             strategy  closed_trades win_rate closed_pnl open_pnl total_pnl charges stock_return_buy_hold
+symbol                                                                                                   
+SBIN           UT Bot            445      34%     -5,257      835    -4,422  83,191                129.3%
+RELIANCE       UT Bot            449      31%    -74,766        0   -74,766  79,378                  8.8%
+MAXHEALTH      UT Bot            456      32%    -51,025     -420   -51,445  81,302                208.2%
+CIPLA          UT Bot            459      28%   -132,059        0  -132,059  83,616                 39.4%
+SUNPHARMA  Supertrend             87      40%     31,530    3,851    35,381  21,102                107.4%
+ICICIBANK  Supertrend            104      34%      8,412   24,286    32,698  25,500                122.8%
+TATASTEEL  Supertrend            122      42%     -9,635        0    -9,635  30,068                 42.2%
+MARUTI     Supertrend            114      42%     13,184    5,442    18,626  26,338                 82.0%
+
+== Compared with holding
+                                                   net_profit total_return    cagr max_drawdown volatility sharpe
+Strategy 05 account (UT Bot 60% + Supertrend 40%) -186,052.15      -18.61%  -4.34%      -26.63%      7.82%  -0.53
+  UT Bot on Rs 6 lakh                             -262,749.81      -43.79% -11.68%      -48.94%      9.93%  -1.20
+  Supertrend on Rs 4 lakh                           76,697.66       19.17%   3.85%      -14.64%      9.00%   0.46
+Same 8 stocks, same 60:40 money, bought and held   880,534.46       88.05%  14.59%      -16.11%     14.00%   1.04
+  UT Bot's 4 stocks held, Rs 6 lakh                547,286.84       91.21%  15.00%      -18.82%     16.80%   0.91
+  Supertrend's 4 stocks held, Rs 4 lakh            333,247.62       83.31%  13.96%      -14.61%     13.94%   1.01
+NIFTYBEES, Rs 10 lakh bought and held              515,869.65       51.59%   9.38%      -14.74%     11.58%   0.83
+
+== Reality checks (net profit, and the share of the backtest's kept)
+  Filled at the next candle's close : account Rs -207,110 (the backtest lost money) | UT Bot (60%) Rs -278,710 (the backtest lost money) | Supertrend (40%) Rs 71,600 (93% kept)
+  Every order one candle late       : account Rs -213,193 (the backtest lost money) | UT Bot (60%) Rs -291,128 (the backtest lost money) | Supertrend (40%) Rs 77,935 (102% kept)
+
+== Warnings
+  - UTBotBasket: 31 of 3652 orders were rejected with reject_code 'margin' (result.orders), the first decided at 2022-04-04 14:15 IST: the margin the order needed was more than the free cash (sized by bt.size.percent, which asked for more than the margin allows); raise capital, lower the size, or set size_caps, for example size_caps = bt.size.caps(leverage=1) for a position of at most 1x the equity
+  - UTBotBasket: 1 of 3652 orders was rejected with reject_code 'market_closed' (result.orders), decided at 2025-10-21 14:45 IST: an intraday order decided at the session's last close could only fill in the next session; stop placing orders on the session's last bar (check self.now)
+  - UTBotBasket: SBIN: generic cash-equity instrument assumed (lot 1, tick 0.05)
+  - UTBotBasket: RELIANCE: generic cash-equity instrument assumed (lot 1, tick 0.05)
+  - UTBotBasket: MAXHEALTH: generic cash-equity instrument assumed (lot 1, tick 0.05)
+  - UTBotBasket: CIPLA: generic cash-equity instrument assumed (lot 1, tick 0.05)
+  - UTBotBasket: charges: the NSE_EQ_DELIVERY rates of cost schedule IN-2026-04-01 used for 2026-11-20 are verified only up to an earlier date, so the charges may be off. Verified on 2026-11-12; later trade dates are charged at these rates and flagged unverified. The start date is the day the Finance Act 2026 F&O STT rates took effect; no other change between that day and the snapshot is known. NSE rows keep the calculator's split between transaction charge and IPFT (NSE circular NSE/FA/73061 moved all but Rs 0.01 per crore of IPFT into the transaction charge in March 2026); the sum is what is charged. Unverified rows say why in their own notes: BSE groups X and SS, BSE options other than Sensex and Bankex. MCX CASTORSEED, RBDPMOLEIN, PEPPER and KAPAS pay the uniform Rs 2.10 per lakh of MCX/F&A/631/2024, not the contract-specific rates of the snapshot, which predate 2024-10-01.
+  - UTBotBasket: charges: the NSE_EQ_DELIVERY rates of cost schedule IN-2026-04-01 are past verification for 12 fills, from 2026-11-13
+  - UTBotBasket: charges: the NSE_EQ_INTRADAY rates of cost schedule IN-2026-04-01 are past verification for 6 fills, from 2026-11-13
+  - SupertrendBasket: SUNPHARMA: generic cash-equity instrument assumed (lot 1, tick 0.05)
+  - SupertrendBasket: ICICIBANK: generic cash-equity instrument assumed (lot 1, tick 0.05)
+  - SupertrendBasket: TATASTEEL: generic cash-equity instrument assumed (lot 1, tick 0.05)
+  - SupertrendBasket: MARUTI: generic cash-equity instrument assumed (lot 1, tick 0.05)
+  - SupertrendBasket: charges: the NSE_EQ_DELIVERY rates of cost schedule IN-2026-04-01 used for 2026-11-20 are verified only up to an earlier date, so the charges may be off. Verified on 2026-11-12; later trade dates are charged at these rates and flagged unverified. The start date is the day the Finance Act 2026 F&O STT rates took effect; no other change between that day and the snapshot is known. NSE rows keep the calculator's split between transaction charge and IPFT (NSE circular NSE/FA/73061 moved all but Rs 0.01 per crore of IPFT into the transaction charge in March 2026); the sum is what is charged. Unverified rows say why in their own notes: BSE groups X and SS, BSE options other than Sensex and Bankex. MCX CASTORSEED, RBDPMOLEIN, PEPPER and KAPAS pay the uniform Rs 2.10 per lakh of MCX/F&A/631/2024, not the contract-specific rates of the snapshot, which predate 2024-10-01.
+  - SupertrendBasket: charges: the NSE_EQ_DELIVERY rates of cost schedule IN-2026-04-01 are past verification for 3 fills, from 2026-11-16
+  - SupertrendBasket: Overfitting check failed, random out of sample: 41.0% of 200 judged assignments kept 50% of the in-sample sharpe, where the rule is at least 80% of assignments keep 50% of the in-sample sharpe out of sample (30% of the sessions out of sample). The edge is fragile or small next to the noise of the run's own trades; result.robustness() on a run of the strategy alone with bt.backtest runs the full set of checks, with charts
+  - SupertrendBasket: Overfitting check failed, trade resample: 70.0% of paths profitable, ruin odds 0.0%, where the rule is at least 95% of paths profitable and at most 5% of paths falling 50% from a peak. The edge is fragile or small next to the noise of the run's own trades; result.robustness() on a run of the strategy alone with bt.backtest runs the full set of checks, with charts
+  - SupertrendBasket: Overfitting check failed, variance: 19.0% of paths profitable at a 34.6% win rate (73.0% at the run's 39.6%), where the rule is at least 80% of paths profitable with the win rate 5 points lower. The edge is fragile or small next to the noise of the run's own trades; result.robustness() on a run of the strategy alone with bt.backtest runs the full set of checks, with charts
+
+== Cross-check against the indicators worked out again from Historify's candles
+  Trades in both          : 2221 (exit on the same candle: 2221)
+  Only in the replay      : 22 (19 of them an order the engine rejected for cash)
+  Only in the engine      : 20 (the later buy after such a rejection, or a special session whose hourly candles start off the 09:15 grid)
+  Replay entries not explained by a rejected order:
+   symbol                entry_time        exit_time_expected exit_time_engine    _merge  exit_matches  order_rejected_here
+    CIPLA 2024-03-02 11:15:00+05:30 2024-03-04 15:15:00+05:30              NaT left_only         False                False
+MAXHEALTH 2024-03-02 11:15:00+05:30 2024-03-04 10:15:00+05:30              NaT left_only         False                False
+     SBIN 2024-11-01 18:15:00+05:30 2024-11-04 10:15:00+05:30              NaT left_only         False                False
+
+Saved in D:\Quantflow 5\Day06\backtesting examples\strategies\05_two_baskets_utbot_supertrend_1h_long\reports: strategy_report.html, tearsheet.html, tearsheet_utbot.html, tearsheet_supertrend.html, trades.csv, open_positions.csv, signals.csv, by_stock.csv, compared.csv, trade_check.csv, tables/

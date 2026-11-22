@@ -1,0 +1,3 @@
+symbol,instrument,product,quantity_units,average_price_rupees,mark_rupees,unrealized_rupees,stale,value_rupees,weight_pct
+NIFTYBEES,0,CNC,0.0,,265.59,0.0,False,0.0,0.0
+GOLDBEES,1,CNC,0.0,,118.13,0.0,False,0.0,0.0

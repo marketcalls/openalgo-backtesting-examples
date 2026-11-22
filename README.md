@@ -21,6 +21,8 @@ The results include the strategies that did not work. A backtest that shows an i
 | 02 | Supertrend (10, 3) with an EMA 200 filter, hourly, long only, SBIN | Pending a rerun on Historify data |
 | 03 | NIFTYBEES 60 : GOLDBEES 40, buy and hold | Reference portfolio: 13.03% a year, worst fall 18.88% |
 | 04 | Supertrend (10, 3), hourly, long only, on the 10 least correlated NIFTY 50 stocks | Reject: 5.80% a year against 12.63% for holding the same stocks |
+| 05 | Two strategies on one Rs 10 lakh account, hourly, long only: UT Bot 60% (SBIN, RELIANCE, MAXHEALTH, CIPLA) and Supertrend (10, 3) 40% (SUNPHARMA, ICICIBANK, TATASTEEL, MARUTI) | Reject: -4.34% a year against 14.59% for holding the same 8 stocks |
+| 06 | Momentum switch between NIFTYBEES and GOLDBEES (Antonacci's dual momentum, crash filter removed) with a 200-day EMA entry and exit filter, daily candles, checked every quarter, 12- and 3-month lookbacks | Not enough evidence: 3-month version 15.79% a year (worst fall 24.02%) against 14.40% (worst fall 19.53%) for a 50:50 mix of the same ETFs; the 12-month version made 10.33% |
 
 Details, figures and reasons are in [`strategies/README.md`](strategies/README.md) and each strategy's own README.
 
